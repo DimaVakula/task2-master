@@ -19,7 +19,7 @@ export const CityBlock = ({title})=>{
     useEffect(() => {
             setIsLoading(true)
             fetch(url).then(response => response.json()).then(data => {console.log(data)
-                setData(data.main.temp)});
+                setData(data)});
             setIsloading(false)
         },
         [])
