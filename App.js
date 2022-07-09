@@ -1,6 +1,11 @@
 import React from 'react';
-import {SafeAreaView, TextInput, FlatList, View} from 'react-native';
+import {SafeAreaView, TextInput, FlatList, View, Text} from 'react-native';
 import {CityBlock} from "./Components/CityBlock";
+import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import { NavigationContainer } from '@react-navigation/native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
+const Tab = createBottomTabNavigator();
 
 const data = [
         {title:'Гомель', temp:'30'},
@@ -13,9 +18,9 @@ const data = [
         {title:'Брест', temp:'29'},
 ];
 
-export default function App() {
-    const [text, onChangeText] = React.useState("Enter city here...");
-    return (
+function WeatherScreen(){
+const [text, onChangeText] = React.useState("Enter city here...");
+    return(
         <SafeAreaView>
             <TextInput
                 style={{
@@ -42,5 +47,48 @@ export default function App() {
                 renderItem={({item}) => <CityBlock title={item.title} temp={item.temp}/>}
             />
         </SafeAreaView>
+    );
+}
+
+function SettingsScreen() {
+    return(
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text>Settings!</Text>
+        </View>
+    );
+}
+
+function MyTabs() {
+    return (
+        <Tab.Navigator>
+            <Tab.Screen
+                name="Weather"
+                component={WeatherScreen}
+                options={{
+                    tabBarLabel: 'Home',
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="home" color={color} size={size} />
+                    ),
+                }}
+            />
+            <Tab.Screen
+                name="Settings"
+                component={SettingsScreen}
+                options={{
+                tabBarLabel: 'Settings',
+            tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons name="cog" color={color} size={size} />
+            ),
+        }}
+            />
+        </Tab.Navigator>
+    );
+}
+
+export default function App() {
+    return (
+        <NavigationContainer>
+            <MyTabs/>
+        </NavigationContainer>
     )
 }

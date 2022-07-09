@@ -15,16 +15,16 @@ export const City = ({city}) => {
 
 export const CityBlock = ({title})=>{
     const [data,setData] = useState();
-    const [isLoading,setIsLoading] = useState();
+    const [isLoading,setIsloading] = useState();
     useEffect(() => {
-            setIsLoading(true)
+            setIsloading(true)
             fetch(url).then(response => response.json()).then(data => {console.log(data)
                 setData(data)});
             setIsloading(false)
         },
         [])
     if(isLoading) return <ActivityIndicator/>
-    const temp = Math.trunc(data.main.temp -273);
+    const temp = Math.trunc(data?.main?.temp -273);
     return(
     <View style={styles.rect}>
         <Text style={styles.title}>
