@@ -8,10 +8,8 @@ const blockSize = width * 0.45
 
 const url='https://api.openweathermap.org/data/2.5/weather?q=Gomel&appid=fc56adffbf7df45c88b352092b9406ee';
 
-export const City = ({city}) => {
-    return(
-    url(`https://api.openweathermap.org/data/2.5/weather?q=${value}&appid=fc56adffbf7df45c88b352092b9406ee`)
-)}
+export const city = ({city}) => {
+    return(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=fc56adffbf7df45c88b352092b9406ee`)}
 
 export const CityBlock = ({title})=>{
     const [data,setData] = useState();

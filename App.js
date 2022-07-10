@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, TextInput, FlatList, View, Text} from 'react-native';
+import {SafeAreaView, TextInput, FlatList, View, Text, StyleSheet} from 'react-native';
 import {CityBlock} from "./Components/CityBlock";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from '@react-navigation/native';
@@ -19,25 +19,20 @@ const data = [
 ];
 
 function WeatherScreen(){
-const [text, onChangeText] = React.useState("Enter city here...");
+const [text, onChangeText] = React.useState('');
     return(
         <SafeAreaView>
             <TextInput
-                style={{
-                    flex: 1,
-                    display: 'flex',
-                    paddingHorizontal: 16,
-                    paddingVertical: 24,
-                    borderWidth: 1,
-                }}
+                style={style.TextInput}
+                placeholder='Enter city here...'
                 onChangeText={onChangeText}
                 value={text}
             />
             <FlatList
-                style={{ backgroundColor: 'purple'}}
+                style={{ backgroundColor: 'white'}}
                 contentContainerStyle={{justifyContent: 'center', paddingHorizontal:16}}
                 ItemSeparatorComponent={() => (
-                    <View style={{ backgroundColor: "green", height: 8 }} />
+                    <View style={{ backgroundColor: "white", height: 8 }} />
                 )}
                 columnWrapperStyle={{
                     justifyContent: "space-between",
@@ -62,12 +57,13 @@ function MyTabs() {
     return (
         <Tab.Navigator>
             <Tab.Screen
-                name="Weather"
+                name="City"
                 component={WeatherScreen}
                 options={{
-                    tabBarLabel: 'Home',
+                    headerShown: false,
+                    tabBarLabel: 'City',
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="home" color={color} size={size} />
+                        <MaterialCommunityIcons name="city" color={'#000000'} size={'36'} />
                     ),
                 }}
             />
@@ -75,9 +71,10 @@ function MyTabs() {
                 name="Settings"
                 component={SettingsScreen}
                 options={{
-                tabBarLabel: 'Settings',
+                    headerShown: false,
+                    tabBarLabel: 'Settings',
             tabBarIcon: ({ color, size }) => (
-                <MaterialCommunityIcons name="cog" color={color} size={size} />
+                <MaterialCommunityIcons name="cog" color={'#000000'} size={'36'} />
             ),
         }}
             />
@@ -92,3 +89,14 @@ export default function App() {
         </NavigationContainer>
     )
 }
+
+const style = StyleSheet.create({
+    TextInput:{
+        flex: 1,
+        display: 'flex',
+        paddingHorizontal: 16,
+        paddingVertical: 24,
+        borderWidth: 1,
+    }
+})
+
