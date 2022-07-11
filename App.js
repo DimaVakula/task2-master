@@ -83,8 +83,6 @@ export default function App() {
 
 const style = StyleSheet.create({
     TextInput: {
-        // flex: 1,
-        // display: 'flex',
         paddingHorizontal: 16,
         paddingVertical: 24,
         borderWidth: 1,
