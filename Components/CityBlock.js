@@ -1,38 +1,50 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View, Dimensions, StyleSheet} from "react-native";
-import {ActivityIndicator} from "react-native-web";
+import {Text, View, Dimensions, StyleSheet, ActivityIndicator} from "react-native";
 
 const {width} = Dimensions.get('window')
 
 const blockSize = width * 0.45
 
-const url='https://api.openweathermap.org/data/2.5/weather?q=Gomel&appid=fc56adffbf7df45c88b352092b9406ee';
+export const getWeather = (city) => `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=fc56adffbf7df45c88b352092b9406ee`
 
-export const getWeather = ({city}) => {
-    return(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=fc56adffbf7df45c88b352092b9406ee`)}
+const fetchData = async ({setIsLoading, setData, city}) => {
+    setIsLoading(true)
+    await fetch(getWeather(city))
+        .then(response => response.json())
+        .then(data => {
+            setData(data)
+        })
+    setIsLoading(false)
+}
 
-export const CityBlock = ({title})=>{
-    const [data,setData] = useState();
-    const [isLoading,setIsloading] = useState();
+export const CityBlock = ({title}) => {
+    const [data, setData] = useState();
+    const [isLoading, setIsLoading] = useState(false);
+
     useEffect(() => {
-            setIsloading(true)
-            fetch(url).then(response => response.json()).then(data => {console.log(data)
-                setData(data)});
-            setIsloading(false)
+            fetchData({setIsLoading, setData, city:title})
         },
         [])
-    if(isLoading) return <ActivityIndicator/>
-    const temp = Math.trunc(data?.main?.temp -273);
-    return(
-    <View style={styles.rect}>
-        <Text style={styles.title}>
-            {title}
-        </Text>
-        <Text style={styles.temp}>
-            {temp}
-        </Text>
-    </View>
-)}
+
+    const temp = Math.trunc(data?.main?.temp - 273);
+
+    let renderContent = isLoading ? <ActivityIndicator/> : (
+        <>
+            <Text style={styles.title}>
+                {title}
+            </Text>
+            <Text style={styles.temp}>
+                {temp}
+            </Text>
+        </>
+    )
+
+    return (
+        <View style={styles.rect}>
+            {renderContent}
+        </View>
+    )
+}
 
 export const styles = StyleSheet.create({
     rect: {
@@ -45,7 +57,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    title:{
+    title: {
         fontStyle: 'normal',
         fontWeight: '700',
         fontSize: 20,
