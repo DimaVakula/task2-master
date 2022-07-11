@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, TextInput, FlatList, View, Text, StyleSheet} from 'react-native';
+import {SafeAreaView, TextInput, FlatList, View, Text, StyleSheet, StatusBar} from 'react-native';
 import {CityBlock} from "./Components/CityBlock";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {NavigationContainer} from '@react-navigation/native';
@@ -12,17 +12,20 @@ const data = [
     {title: 'Гродно', temp: '26'},
     {title: 'Витебск', temp: '27'},
     {title: 'Могилёв', temp: '29'},
-    {title: 'Брест', temp: '29'},
-    {title: 'Могилёв', temp: '29'},
-    {title: 'Брест', temp: '29'},
+    {title: 'Дрогичин', temp: '29'},
+    {title: 'Болота', temp: '29'},
+    {title: 'Белоозёрск', temp: '29'},
 ];
 
 function WeatherScreen() {
     const [text, onChangeText] = React.useState('');
     return (
         <SafeAreaView>
+            <StatusBar
+                animated={true}
+                barStyle={"dark-content"}/>
             <TextInput
-                style={style.TextInput}
+                style={style.textinput}
                 placeholder='Enter city here...'
                 onChangeText={onChangeText}
                 value={text}
@@ -42,10 +45,18 @@ function WeatherScreen() {
     );
 }
 
-function SettingsScreen() {
+function DailyScreen() {
     return (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <Text>Settings!</Text>
+        <View style={style.dailyscreen}>
+            <Text>Daily!</Text>
+        </View>
+    );
+}
+
+function HourlyScreen() {
+    return (
+        <View style={style.hourlyscreen}>
+            <Text>Hourly!</Text>
         </View>
     );
 }
@@ -62,11 +73,19 @@ function MyTabs() {
                 }}
             />
             <Tab.Screen
-                name="Settings"
-                component={SettingsScreen}
+                name="Daily"
+                component={DailyScreen}
                 options={{
                     headerShown: false,
-                    tabBarLabel: 'Settings',
+                    tabBarLabel: 'Daily',
+                }}
+            />
+            <Tab.Screen
+                name="Hourly"
+                component={HourlyScreen}
+                options={{
+                    headerShown: false,
+                    tabBarLabel: 'Hourly',
                 }}
             />
         </Tab.Navigator>
@@ -82,7 +101,7 @@ export default function App() {
 }
 
 const style = StyleSheet.create({
-    TextInput: {
+    textinput: {
         paddingHorizontal: 16,
         paddingVertical: 24,
         borderWidth: 1,
@@ -102,6 +121,16 @@ const style = StyleSheet.create({
     },
     styleFlat: {
         backgroundColor: 'white',
+    },
+    dailyscreen: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    hourlyscreen: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 
 })
