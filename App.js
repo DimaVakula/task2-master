@@ -3,7 +3,6 @@ import {SafeAreaView, TextInput, FlatList, View, Text, StyleSheet} from 'react-n
 import {CityBlock} from "./Components/CityBlock";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from '@react-navigation/native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 
@@ -62,9 +61,6 @@ function MyTabs() {
                 options={{
                     headerShown: false,
                     tabBarLabel: 'City',
-                    tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="city" color={'#000000'} size={'36'} />
-                    ),
                 }}
             />
             <Tab.Screen
@@ -73,9 +69,6 @@ function MyTabs() {
                 options={{
                     headerShown: false,
                     tabBarLabel: 'Settings',
-            tabBarIcon: ({ color, size }) => (
-                <MaterialCommunityIcons name="cog" color={'#000000'} size={'36'} />
-            ),
         }}
             />
         </Tab.Navigator>
