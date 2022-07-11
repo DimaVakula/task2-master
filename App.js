@@ -2,24 +2,24 @@ import React from 'react';
 import {SafeAreaView, TextInput, FlatList, View, Text, StyleSheet} from 'react-native';
 import {CityBlock} from "./Components/CityBlock";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 
 const data = [
-        {title:'Гомель', temp:'30'},
-        {title:'Минск', temp:'28'},
-        {title:'Гродно', temp:'26'},
-        {title:'Витебск', temp:'27'},
-        {title:'Могилёв', temp:'29'},
-        {title:'Брест', temp:'29'},
-        {title:'Могилёв', temp:'29'},
-        {title:'Брест', temp:'29'},
+    {title: 'Гомель', temp: '30'},
+    {title: 'Минск', temp: '28'},
+    {title: 'Гродно', temp: '26'},
+    {title: 'Витебск', temp: '27'},
+    {title: 'Могилёв', temp: '29'},
+    {title: 'Брест', temp: '29'},
+    {title: 'Могилёв', temp: '29'},
+    {title: 'Брест', temp: '29'},
 ];
 
-function WeatherScreen(){
-const [text, onChangeText] = React.useState('');
-    return(
+function WeatherScreen() {
+    const [text, onChangeText] = React.useState('');
+    return (
         <SafeAreaView>
             <TextInput
                 style={style.TextInput}
@@ -31,7 +31,7 @@ const [text, onChangeText] = React.useState('');
                 style={style.styleFlat}
                 contentContainerStyle={style.contentContainerStyle}
                 ItemSeparatorComponent={() => (
-                    <View style={style.viewFlat} />
+                    <View style={style.viewFlat}/>
                 )}
                 columnWrapperStyle={style.columnWrapperStyle}
                 data={data}
@@ -43,8 +43,8 @@ const [text, onChangeText] = React.useState('');
 }
 
 function SettingsScreen() {
-    return(
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    return (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <Text>Settings!</Text>
         </View>
     );
@@ -67,7 +67,7 @@ function MyTabs() {
                 options={{
                     headerShown: false,
                     tabBarLabel: 'Settings',
-        }}
+                }}
             />
         </Tab.Navigator>
     );
@@ -82,7 +82,7 @@ export default function App() {
 }
 
 const style = StyleSheet.create({
-    TextInput:{
+    TextInput: {
         // flex: 1,
         // display: 'flex',
         paddingHorizontal: 16,
@@ -92,17 +92,17 @@ const style = StyleSheet.create({
     contentContainerStyle:
         {
             justifyContent: 'center',
-            paddingHorizontal:16,
-            paddingTop:16
+            paddingHorizontal: 16,
+            paddingTop: 16
         },
-        viewFlat:{
-            backgroundColor: "white",
-            height: 8
-        },
-    columnWrapperStyle:{
+    viewFlat: {
+        backgroundColor: "white",
+        height: 8
+    },
+    columnWrapperStyle: {
         justifyContent: "space-between",
     },
-    styleFlat:{
+    styleFlat: {
         backgroundColor: 'white',
     }
 
