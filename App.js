@@ -28,14 +28,12 @@ const [text, onChangeText] = React.useState('');
                 value={text}
             />
             <FlatList
-                style={{ backgroundColor: 'white'}}
-                contentContainerStyle={{justifyContent: 'center', paddingHorizontal:16}}
+                style={style.styleFlat}
+                contentContainerStyle={style.contentContainerStyle}
                 ItemSeparatorComponent={() => (
-                    <View style={{ backgroundColor: "white", height: 8 }} />
+                    <View style={style.viewFlat} />
                 )}
-                columnWrapperStyle={{
-                    justifyContent: "space-between",
-                }}
+                columnWrapperStyle={style.columnWrapperStyle}
                 data={data}
                 numColumns={2}
                 renderItem={({item}) => <CityBlock title={item.title} temp={item.temp}/>}
@@ -90,6 +88,22 @@ const style = StyleSheet.create({
         paddingHorizontal: 16,
         paddingVertical: 24,
         borderWidth: 1,
+    },
+    contentContainerStyle:
+        {
+            justifyContent: 'center',
+            paddingHorizontal:16
+        },
+        viewFlat:{
+            backgroundColor: "white",
+            height: 8
+        },
+    columnWrapperStyle:{
+        justifyContent: "space-between",
+    },
+    styleFlat:{
+        backgroundColor: 'white',
     }
+
 })
 
