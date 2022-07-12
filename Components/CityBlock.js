@@ -6,7 +6,8 @@ const {width} = Dimensions.get('window')
 const blockSize = width * 0.45
 
 export const CityBlock = ({title},{data2}) => {
-    const [data2, setData] = useState();
+
+    const [data, setData] = useState();
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -14,7 +15,7 @@ export const CityBlock = ({title},{data2}) => {
         },
         [])
 
-    const temp = Math.trunc(data2?.main?.temp - 273);
+    const temp = Math.trunc(data?.main?.temp - 273);
 
     let renderContent = isLoading ? <ActivityIndicator/> : (
         <>
