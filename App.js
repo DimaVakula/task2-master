@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from "react";
 import {SafeAreaView, TextInput, FlatList, View, Text, StyleSheet, StatusBar} from 'react-native';
 import {CityBlock} from "./Components/CityBlock";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
@@ -19,7 +19,10 @@ const data = [
 
 function WeatherScreen() {
     const [text, onChangeText] = React.useState('');
+    const [data, setData] = useState();
+    const [isLoading, setIsLoading] = useState(false);
 
+    const temp = Math.trunc(data?.main?.temp - 273);
     const getWeather = (city) => `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=fc56adffbf7df45c88b352092b9406ee`
 
     const fetchData = async ({setIsLoading, setData, city}) => {
@@ -33,6 +36,11 @@ function WeatherScreen() {
             })
         setIsLoading(false)
     }
+
+    useEffect(() => {
+            fetchData({setIsLoading, setData, city:title})
+        },
+        [])
 
     return (
         <SafeAreaView>
@@ -52,7 +60,7 @@ function WeatherScreen() {
                     <View style={style.viewFlat}/>
                 )}
                 columnWrapperStyle={style.columnWrapperStyle}
-                data={data2}
+                data={data}
                 numColumns={2}
                 renderItem={({item}) => <CityBlock title={item.title} temp={item.temp}/>}
             />

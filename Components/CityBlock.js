@@ -7,16 +7,6 @@ const blockSize = width * 0.45
 
 export const CityBlock = ({title},{data2}) => {
 
-    const [data, setData] = useState();
-    const [isLoading, setIsLoading] = useState(false);
-
-    useEffect(() => {
-            fetchData({setIsLoading, setData, city:title})
-        },
-        [])
-
-    const temp = Math.trunc(data?.main?.temp - 273);
-
     let renderContent = isLoading ? <ActivityIndicator/> : (
         <>
             <Text style={styles.title}>
