@@ -28,7 +28,7 @@ function WeatherScreen() {
             .then(response => response.json())
             .then(data => {
                 setData(data)
-            const data2 [];
+            const data2 = [];
                 data2.push({title: city});
             })
         setIsLoading(false)
