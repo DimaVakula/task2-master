@@ -5,20 +5,8 @@ const {width} = Dimensions.get('window')
 
 const blockSize = width * 0.45
 
-export const getWeather = (city) => `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=fc56adffbf7df45c88b352092b9406ee`
-
-const fetchData = async ({setIsLoading, setData, city}) => {
-    setIsLoading(true)
-    await fetch(getWeather(city))
-        .then(response => response.json())
-        .then(data => {
-            setData(data)
-        })
-    setIsLoading(false)
-}
-
-export const CityBlock = ({title}) => {
-    const [data, setData] = useState();
+export const CityBlock = ({title},{data2}) => {
+    const [data2, setData] = useState();
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -26,7 +14,7 @@ export const CityBlock = ({title}) => {
         },
         [])
 
-    const temp = Math.trunc(data?.main?.temp - 273);
+    const temp = Math.trunc(data2?.main?.temp - 273);
 
     let renderContent = isLoading ? <ActivityIndicator/> : (
         <>

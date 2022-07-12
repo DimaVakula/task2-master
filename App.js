@@ -19,6 +19,21 @@ const data = [
 
 function WeatherScreen() {
     const [text, onChangeText] = React.useState('');
+
+    export const getWeather = (city) => `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=fc56adffbf7df45c88b352092b9406ee`
+
+    const fetchData = async ({setIsLoading, setData, city}) => {
+        setIsLoading(true)
+        await fetch(getWeather(city))
+            .then(response => response.json())
+            .then(data => {
+                setData(data)
+            const data2 [];
+                data2.push({title: city});
+            })
+        setIsLoading(false)
+    }
+
     return (
         <SafeAreaView>
             <StatusBar
@@ -37,7 +52,7 @@ function WeatherScreen() {
                     <View style={style.viewFlat}/>
                 )}
                 columnWrapperStyle={style.columnWrapperStyle}
-                data={data}
+                data={data2}
                 numColumns={2}
                 renderItem={({item}) => <CityBlock title={item.title} temp={item.temp}/>}
             />
