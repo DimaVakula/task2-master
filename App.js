@@ -1,24 +1,42 @@
-import React from 'react';
-import {SafeAreaView, TextInput, FlatList, View, Text, StyleSheet} from 'react-native';
-import {CityBlock} from "./Components/CityBlock";
+import React, {useEffect, useState} from 'react';
+import {SafeAreaView, TextInput, FlatList, View, Text, StyleSheet, ActivityIndicator} from 'react-native';
+import {CityBlock} from "./src/components/CityBlock";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {NavigationContainer} from '@react-navigation/native';
+import {getWeather} from "./src/utils";
 
 const Tab = createBottomTabNavigator();
 
-const data = [
-    {title: 'Гомель', temp: '30'},
-    {title: 'Минск', temp: '28'},
-    {title: 'Гродно', temp: '26'},
-    {title: 'Витебск', temp: '27'},
-    {title: 'Могилёв', temp: '29'},
-    {title: 'Брест', temp: '29'},
-    {title: 'Могилёв', temp: '29'},
-    {title: 'Брест', temp: '29'},
-];
+const cityList = ['Гомель', 'Минск', 'Гродно', 'Витебск', 'Могилёв', 'Брест', 'Могилёв', 'Брест',];
+
+const fetchData = async ({setLoading, setData, cityList}) => {
+    setLoading(true)
+    const dataList = []
+    await Promise.all(cityList.map(async (city) => {
+        await fetch(getWeather(city))
+            .then(response => response.json())
+            .then(data => {
+                dataList.push(data)
+            })
+
+    }))
+    setData(dataList)
+    setLoading(false)
+}
+
 
 function WeatherScreen() {
     const [text, onChangeText] = React.useState('');
+    const [data, setData] = useState([])
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        fetchData({cityList, setLoading, setData})
+    }, [])
+
+    const onRefresh = () => fetchData({cityList, setLoading, setData})
+
+
     return (
         <SafeAreaView>
             <TextInput
@@ -33,10 +51,13 @@ function WeatherScreen() {
                 ItemSeparatorComponent={() => (
                     <View style={style.viewFlat}/>
                 )}
+                refreshing={loading}
+                onRefresh={onRefresh}
                 columnWrapperStyle={style.columnWrapperStyle}
                 data={data}
+                ListEmptyComponent={<ActivityIndicator/>}
                 numColumns={2}
-                renderItem={({item}) => <CityBlock title={item.title} temp={item.temp}/>}
+                renderItem={({item}) => <CityBlock title={item.name} temp={Math.trunc(item.main.temp - 273)}/>}
             />
         </SafeAreaView>
     );
@@ -102,6 +123,8 @@ const style = StyleSheet.create({
     },
     styleFlat: {
         backgroundColor: 'white',
+        // flex:1
+        height:'100%'
     }
 
 })
