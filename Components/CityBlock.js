@@ -1,22 +1,22 @@
-import React, {useEffect, useState} from 'react';
-import {Text, View, Dimensions, StyleSheet, ActivityIndicator} from "react-native";
+import React from 'react';
+import {Text, View, Dimensions, StyleSheet} from "react-native";
 
 const {width} = Dimensions.get('window')
 
 const blockSize = width * 0.45
 
-export const CityBlock = ({title},{data2}) => {
+export const CityBlock = ({title,temp}) => {
+return(
+    <View style={styles.rect}>
+        <Text style={styles.title}>
+            {title}
+        </Text>
+        <Text style={styles.temp}>
+            {temp}
+        </Text>
+    </View>
 
-    let renderContent = isLoading ? <ActivityIndicator/> : (
-        <>
-            <Text style={styles.title}>
-                {title}
-            </Text>
-            <Text style={styles.temp}>
-                {temp}
-            </Text>
-        </>
-    )
+)
 
     return (
         <View style={styles.rect}>

@@ -1,54 +1,46 @@
 import React, {useEffect, useState} from "react";
-import {SafeAreaView, TextInput, FlatList, View, Text, StyleSheet, StatusBar} from 'react-native';
+import {SafeAreaView, TextInput, FlatList, View, Text, StyleSheet, StatusBar, ActivityIndicator} from 'react-native';
 import {CityBlock} from "./Components/CityBlock";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {NavigationContainer} from '@react-navigation/native';
+import {getWeather} from "./utils";
 
 const Tab = createBottomTabNavigator();
 
-const data = [
-    {title: 'Гомель', temp: '30'},
-    {title: 'Минск', temp: '28'},
-    {title: 'Гродно', temp: '26'},
-    {title: 'Витебск', temp: '27'},
-    {title: 'Могилёв', temp: '29'},
-    {title: 'Дрогичин', temp: '29'},
-    {title: 'Болота', temp: '29'},
-    {title: 'Белоозёрск', temp: '29'},
-];
+const cityList = ['Гомель', 'Минск', 'Гродно', 'Витебск', 'Могилёв', 'Брест', 'Дрогичин', 'Болота',];
+
+const fetchData = async ({setLoading, setData, cityList}) => {
+    setLoading(true)
+    const dataList = []
+    await Promise.all(cityList.map(async (city) => {
+        await fetch(getWeather(city))
+            .then(response => response.json())
+            .then(data => {
+                dataList.push(data)
+            })
+
+    }))
+    setData(dataList)
+    setLoading(false)
+}
 
 function WeatherScreen() {
     const [text, onChangeText] = React.useState('');
     const [data, setData] = useState();
-    const [isLoading, setIsLoading] = useState(false);
+    const [loading, setLoading] = useState(true)
 
     const temp = Math.trunc(data?.main?.temp - 273);
-    const getWeather = (city) => `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=fc56adffbf7df45c88b352092b9406ee`
-
-    const fetchData = async ({setIsLoading, setData, city}) => {
-        setIsLoading(true)
-        await fetch(getWeather(city))
-            .then(response => response.json())
-            .then(data => {
-                setData(data)
-            const data2 = [];
-                data2.push({title: city});
-            })
-        setIsLoading(false)
-    }
 
     useEffect(() => {
-            fetchData({setIsLoading, setData, city:title})
+            fetchData({cityList, setLoading, setData })
         },
         [])
 
+    const onRefresh = () => fetchData({cityList, setLoading, setData})
     return (
         <SafeAreaView>
-            <StatusBar
-                animated={true}
-                barStyle={"dark-content"}/>
             <TextInput
-                style={style.textinput}
+                style={style.TextInput}
                 placeholder='Enter city here...'
                 onChangeText={onChangeText}
                 value={text}
@@ -59,10 +51,13 @@ function WeatherScreen() {
                 ItemSeparatorComponent={() => (
                     <View style={style.viewFlat}/>
                 )}
+                refreshing={loading}
+                onRefresh={onRefresh}
                 columnWrapperStyle={style.columnWrapperStyle}
                 data={data}
+                ListEmptyComponent={<ActivityIndicator/>}
                 numColumns={2}
-                renderItem={({item}) => <CityBlock title={item.title} temp={item.temp}/>}
+                renderItem={({item}) => <CityBlock title={item.name} temp={Math.trunc(item.main.temp - 273)}/>}
             />
         </SafeAreaView>
     );
@@ -144,6 +139,8 @@ const style = StyleSheet.create({
     },
     styleFlat: {
         backgroundColor: 'white',
+        // flex:1
+        height:'100%'
     },
     dailyscreen: {
         flex: 1,
