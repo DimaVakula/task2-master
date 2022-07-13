@@ -17,6 +17,7 @@ const fetchData = async ({setLoading, setData, cityList}) => {
             .then(response => response.json())
             .then(data => {
                 dataList.push(data)
+                      console.log(data.weather[0].icon);
             })
 
     }))
@@ -39,6 +40,9 @@ function WeatherScreen() {
     const onRefresh = () => fetchData({cityList, setLoading, setData})
     return (
         <SafeAreaView>
+            <StatusBar
+                animated={true}
+                barStyle={"dark-content"}/>
             <TextInput
                 style={style.TextInput}
                 placeholder='Enter city here...'
@@ -57,7 +61,7 @@ function WeatherScreen() {
                 data={data}
                 ListEmptyComponent={<ActivityIndicator/>}
                 numColumns={2}
-                renderItem={({item}) => <CityBlock title={item.name} temp={Math.trunc(item.main.temp - 273)}/>}
+                renderItem={({item}) => <CityBlock title={item.name} icon={item.weather[0].icon} temp={Math.trunc(item.main.temp - 273)}/>}
             />
         </SafeAreaView>
     );

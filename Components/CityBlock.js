@@ -1,16 +1,21 @@
 import React from 'react';
-import {Text, View, Dimensions, StyleSheet} from "react-native";
+import {Text, View, Dimensions, StyleSheet, Image} from "react-native";
 
 const {width} = Dimensions.get('window')
 
 const blockSize = width * 0.45
 
-export const CityBlock = ({title,temp}) => {
+export const CityBlock = ({title,temp, icon}) => {
 return(
     <View style={styles.rect}>
         <Text style={styles.title}>
             {title}
         </Text>
+        <Image
+            style={{width:'50%', height:'50%'}}
+            source={{
+            uri:`http://openweathermap.org/img/wn/${icon}@2x.png`,
+        }}/>
         <Text style={styles.temp}>
             {temp}
         </Text>
