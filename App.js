@@ -17,7 +17,7 @@ const fetchData = async ({setLoading, setData, cityList}) => {
             .then(response => response.json())
             .then(data => {
                 dataList.push(data)
-                      console.log(data.weather[0].icon);
+                    //console.log(data.weather[0].icon);
             })
 
     }))
@@ -44,7 +44,7 @@ function WeatherScreen() {
                 animated={true}
                 barStyle={"dark-content"}/>
             <TextInput
-                style={style.TextInput}
+                style={style.textInput}
                 placeholder='Enter city here...'
                 onChangeText={onChangeText}
                 value={text}
@@ -123,7 +123,7 @@ export default function App() {
 }
 
 const style = StyleSheet.create({
-    textinput: {
+    textInput: {
         paddingHorizontal: 16,
         paddingVertical: 24,
         borderWidth: 1,

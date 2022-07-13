@@ -12,7 +12,7 @@ return(
             {title}
         </Text>
         <Image
-            style={{width:'50%', height:'50%'}}
+            style={styles.image}
             source={{
             uri:`http://openweathermap.org/img/wn/${icon}@2x.png`,
         }}/>
@@ -56,5 +56,9 @@ export const styles = StyleSheet.create({
         lineHeight: 24,
         letterSpacing: -0.41,
         color: '#111212',
+    },
+    image: {
+        width:'50%',
+        height:'50%'
     }
 })
