@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import {SafeAreaView, TextInput, FlatList, View, Text, StyleSheet, StatusBar, ActivityIndicator} from 'react-native';
 import {CityBlock} from "./Components/CityBlock";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
@@ -7,11 +7,13 @@ import {getWeather} from "./utils";
 
 const Tab = createBottomTabNavigator();
 
+const timeRef = useRef(null);
+
 const cityList = ['Гомель', 'Минск', 'Гродно', 'Витебск', 'Могилёв', 'Брест', 'Дрогичин', 'Болота',];
 
 const fetchData = async ({setLoading, setData, cityList}) => {
-    setLoading(true)
     const dataList = []
+    setLoading(true)
     await Promise.all(cityList.map(async (city) => {
         await fetch(getWeather(city))
             .then(response => response.json())
@@ -25,6 +27,22 @@ const fetchData = async ({setLoading, setData, cityList}) => {
     setLoading(false)
 }
 
+const fetchCity = async ({setLoading, text}) => {
+    setLoading(true)
+    await Promise.all(async(text) => {
+        await fetch(getWeather(text))
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+        })
+    })
+    setLoading(false)
+}
+
+timeRef.current = setTimeout( async () => {
+    fetchCity(setLoading,text)
+},200)
+
 function WeatherScreen() {
     const [text, onChangeText] = React.useState('');
     const [data, setData] = useState();
@@ -33,7 +51,7 @@ function WeatherScreen() {
     const temp = Math.trunc(data?.main?.temp - 273);
 
     useEffect(() => {
-            fetchData({cityList, setLoading, setData })
+        (text === '' ? (fetchData({cityList, setLoading, setData })) : (fetchCity(setLoading,text)))
         },
         [])
 
