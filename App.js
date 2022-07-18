@@ -21,7 +21,6 @@ const fetchData = async ({setLoading, setData, cityList}) => {
                 dataList.push(data)
                     //console.log(data.weather[0].icon);
             })
-
     }))
     setData(dataList)
     setLoading(false)
