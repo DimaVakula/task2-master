@@ -47,14 +47,17 @@ function WeatherScreen() {
 
     const temp = Math.trunc(data?.main?.temp - 273);
 
-    timeRef.current = setTimeout( async () => {
-        fetchCity(setLoading,setData,text)
-    },200)
-
     useEffect(() => {
-        (text === '' ? (fetchData({cityList, setLoading, setData })) : (clearTimeout(timeRef.current)))
+       fetchData({cityList, setLoading, setData })
         },
         [])
+
+    useEffect(() => {
+        (text === '' ? (console.log('textInput not empty')) : (timeRef.current = setTimeout( async () => {
+            fetchCity(setLoading,setData,text)
+        },200)))
+           // clearTimeout(timeRef.current)))
+    },[])
 
     const onRefresh = () => fetchData({cityList, setLoading, setData})
     return (
