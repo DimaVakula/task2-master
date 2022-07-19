@@ -7,8 +7,6 @@ import {getWeather} from "./utils";
 
 const Tab = createBottomTabNavigator();
 
-const timeRef = useRef(null);
-
 const cityList = ['Гомель', 'Минск', 'Гродно', 'Витебск', 'Могилёв', 'Брест', 'Дрогичин', 'Болота',];
 
 const fetchData = async ({setLoading, setData, cityList}) => {
@@ -26,31 +24,35 @@ const fetchData = async ({setLoading, setData, cityList}) => {
     setLoading(false)
 }
 
-const fetchCity = async ({setLoading, text}) => {
+const fetchCity = async ({setLoading, setData, text}) => {
     setLoading(true)
     await Promise.all(async(text) => {
         await fetch(getWeather(text))
             .then(response => response.json())
             .then(data => {
+                setData(data)
                 console.log(data);
         })
     })
     setLoading(false)
 }
 
-timeRef.current = setTimeout( async () => {
-    fetchCity(setLoading,text)
-},200)
+
 
 function WeatherScreen() {
+    const timeRef = useRef('');
     const [text, onChangeText] = React.useState('');
     const [data, setData] = useState();
     const [loading, setLoading] = useState(true)
 
     const temp = Math.trunc(data?.main?.temp - 273);
 
+    timeRef.current = setTimeout( async () => {
+        fetchCity(setLoading,setData,text)
+    },200)
+
     useEffect(() => {
-        (text === '' ? (fetchData({cityList, setLoading, setData })) : (fetchCity(setLoading,text)))
+        (text === '' ? (fetchData({cityList, setLoading, setData })) : (clearTimeout(timeRef.current)))
         },
         [])
 
