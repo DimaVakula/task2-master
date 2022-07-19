@@ -17,7 +17,7 @@ const fetchData = async ({setLoading, setData, cityList}) => {
             .then(response => response.json())
             .then(data => {
                 dataList.push(data)
-                    //console.log(data.weather[0].icon);
+                //console.log(data.weather[0].icon);
             })
     }))
     setData(dataList)
@@ -26,38 +26,43 @@ const fetchData = async ({setLoading, setData, cityList}) => {
 
 const fetchCity = async ({setLoading, setData, text}) => {
     setLoading(true)
-    await Promise.all(async(text) => {
         await fetch(getWeather(text))
             .then(response => response.json())
             .then(data => {
                 setData(data)
                 console.log(data);
-        })
-    })
+            })
     setLoading(false)
 }
 
 
-
 function WeatherScreen() {
-    const timeRef = useRef('');
+    const timeRef = useRef(null);
     const [text, onChangeText] = React.useState('');
+    const [searchResult,setSearchResult] = useState()
     const [data, setData] = useState();
     const [loading, setLoading] = useState(true)
 
     const temp = Math.trunc(data?.main?.temp - 273);
 
     useEffect(() => {
-       fetchData({cityList, setLoading, setData })
+            fetchData({cityList, setLoading, setData})
         },
         [])
 
     useEffect(() => {
-        (text === '' ? (console.log('textInput not empty')) : (timeRef.current = setTimeout( async () => {
-            fetchCity(setLoading,setData,text)
-        },200)))
-           // clearTimeout(timeRef.current)))
-    },[])
+        if (text.length > 1) {
+            if(timeRef.current!== null) {
+                clearTimeout(timeRef.current)
+            }
+
+            timeRef.current = setTimeout(async () => {
+                console.log('fetch ' + text)
+                fetchCity({setLoading, setData: setSearchResult, text})
+                timeRef.current = null
+            }, 1500)
+        }
+    }, [text])
 
     const onRefresh = () => fetchData({cityList, setLoading, setData})
     return (
@@ -83,7 +88,8 @@ function WeatherScreen() {
                 data={data}
                 ListEmptyComponent={<ActivityIndicator/>}
                 numColumns={2}
-                renderItem={({item}) => <CityBlock title={item.name} icon={item.weather[0].icon} temp={Math.trunc(item.main.temp - 273)}/>}
+                renderItem={({item}) => <CityBlock title={item.name} icon={item.weather[0].icon}
+                                                   temp={Math.trunc(item.main.temp - 273)}/>}
             />
         </SafeAreaView>
     );
@@ -166,7 +172,7 @@ const style = StyleSheet.create({
     styleFlat: {
         backgroundColor: 'white',
         // flex:1
-        height:'100%'
+        height: '100%'
     },
     dailyscreen: {
         flex: 1,
