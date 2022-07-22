@@ -1,31 +1,27 @@
 import React from 'react';
-import {Text, View, Dimensions, StyleSheet, Image} from "react-native";
+import {Text, View, Dimensions, StyleSheet, Image, useColorScheme} from "react-native";
+import {DarkTheme, LightTheme} from "../constants";
 
 const {width} = Dimensions.get('window')
 
 const blockSize = width * 0.45
 
-export const CityBlock = ({title,temp, icon}) => {
-return(
-    <View style={styles.rect}>
-        <Text style={styles.title}>
-            {title}
-        </Text>
-        <Image
-            style={styles.image}
-            source={{
-            uri:`http://openweathermap.org/img/wn/${icon}@2x.png`,
-        }}/>
-        <Text style={styles.temp}>
-            {temp}
-        </Text>
-    </View>
-
-)
+export const CityBlock = ({title, temp, icon}) => {
+    const scheme = useColorScheme()
 
     return (
-        <View style={styles.rect}>
-            {renderContent}
+        <View style={[styles.rect, scheme === 'dark' ? styles.rectDark : styles.rectLight]}>
+            <Text style={[styles.title, scheme === 'dark' ? styles.textDark : styles.textLight]}>
+                {title}
+            </Text>
+            <Image
+                style={styles.image}
+                source={{
+                    uri: `http://openweathermap.org/img/wn/${icon}@2x.png`,
+                }}/>
+            <Text style={[styles.temp, scheme === 'dark' ? styles.textDark : styles.textLight]}>
+                {temp}
+            </Text>
         </View>
     )
 }
@@ -33,7 +29,6 @@ return(
 export const styles = StyleSheet.create({
     rect: {
         boxSizing: 'border-box',
-        backgroundColor: 'white',
         borderWidth: 1,
         width: blockSize,
         height: blockSize,
@@ -41,24 +36,26 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    rectDark: {backgroundColor: DarkTheme.colors.card, borderColor: DarkTheme.colors.border},
+    rectLight: {backgroundColor: LightTheme.colors.card, borderColor: LightTheme.colors.border},
     title: {
         fontStyle: 'normal',
         fontWeight: '700',
         fontSize: 20,
         lineHeight: 34,
         letterSpacing: 0.24,
-        color: '#000000',
     },
+    textLight: {color: LightTheme.colors.text},
+    textDark: {color: DarkTheme.colors.text},
     temp: {
         fontStyle: 'normal',
         fontWeight: '400',
         fontSize: 17,
         lineHeight: 24,
         letterSpacing: -0.41,
-        color: '#111212',
     },
     image: {
-        width:'50%',
-        height:'50%'
+        width: '50%',
+        height: '50%'
     }
 })

@@ -1,7 +1,17 @@
 import React, {useEffect, useRef, useState} from "react";
-import {ActivityIndicator, FlatList, SafeAreaView, StatusBar, StyleSheet, TextInput, View} from "react-native";
+import {
+    ActivityIndicator,
+    FlatList,
+    SafeAreaView,
+    StatusBar,
+    StyleSheet,
+    TextInput,
+    useColorScheme,
+    View
+} from "react-native";
 import {CityBlock} from "../CityBlock";
 import {getWeather} from "../../utils";
+import {DarkTheme, LightTheme} from "../../constants";
 
 const cityList = ['Гомель', 'Минск', 'Гродно', 'Витебск', 'Могилёв', 'Брест', 'Дрогичин', 'Болота',];
 
@@ -34,11 +44,10 @@ const fetchCity = async ({setLoading, setData, text}) => {
 function WeatherScreen() {
     const timeRef = useRef(null);
     const [text, onChangeText] = React.useState('');
-    const [searchResult,setSearchResult] = useState()
+    const [searchResult, setSearchResult] = useState()
     const [data, setData] = useState();
     const [loading, setLoading] = useState(true)
-
-    const temp = Math.trunc(data?.main?.temp - 273);
+    const scheme = useColorScheme()
 
     useEffect(() => {
             fetchData({cityList, setLoading, setData})
@@ -47,14 +56,14 @@ function WeatherScreen() {
 
     useEffect(() => {
         if (text.length > 1) {
-            if(timeRef.current!== null) {
+            if (timeRef.current !== null) {
                 clearTimeout(timeRef.current)
             }
 
             timeRef.current = setTimeout(async () => {
                 console.log('fetch ' + text)
                 fetchCity({setLoading, setData: setSearchResult, text})
-                console.log('+' + JSON.stringify(searchResult,null, 2))
+                console.log('+' + JSON.stringify(searchResult, null, 2))
                 timeRef.current = null
             }, 1500)
         }
@@ -65,22 +74,23 @@ function WeatherScreen() {
         <SafeAreaView>
             <StatusBar
                 animated={true}
-                barStyle={"dark-content"}/>
+                barStyle={"default"}/>
             <TextInput
-                style={style.textInput}
+                style={[styles.textInput, scheme === 'dark' ? styles.textInputDark : styles.textInputLight]}
                 placeholder='Enter city here...'
                 onChangeText={onChangeText}
+                placeholderTextColor={scheme === 'dark' ? DarkTheme.colors.border : LightTheme.colors.border}
                 value={text}
             />
             <FlatList
-                style={style.styleFlat}
-                contentContainerStyle={style.contentContainerStyle}
+                style={styles.styleFlat}
+                contentContainerStyle={styles.contentContainerStyle}
                 ItemSeparatorComponent={() => (
-                    <View style={style.viewFlat}/>
+                    <View style={styles.viewFlat}/>
                 )}
                 refreshing={loading}
                 onRefresh={onRefresh}
-                columnWrapperStyle={style.columnWrapperStyle}
+                columnWrapperStyle={styles.columnWrapperStyle}
                 data={data}
                 ListEmptyComponent={<ActivityIndicator/>}
                 numColumns={2}
@@ -91,19 +101,26 @@ function WeatherScreen() {
     );
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
     textInput: {
         paddingHorizontal: 16,
-        paddingVertical: 24,
+        height: 64,
         borderWidth: 1,
     },
+    textInputLight: {
+        backgroundColor: LightTheme.colors.card,
+        borderColor: LightTheme.colors.border,
+        color: LightTheme.colors.text
+    },
+    textInputDark: {
+        backgroundColor: DarkTheme.colors.card,
+        borderColor: DarkTheme.colors.border,
+        color: DarkTheme.colors.text
+    },
     styleFlat: {
-        backgroundColor: 'white',
-        // flex:1
         height: '100%'
     },
     viewFlat: {
-        backgroundColor: "white",
         height: 8
     },
     columnWrapperStyle: {
