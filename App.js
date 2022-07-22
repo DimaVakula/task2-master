@@ -1,115 +1,12 @@
-import React, {useEffect, useState, useRef} from "react";
-import {SafeAreaView, TextInput, FlatList, View, Text, StyleSheet, StatusBar, ActivityIndicator} from 'react-native';
-import {CityBlock} from "./Components/CityBlock";
+import React from "react";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {NavigationContainer} from '@react-navigation/native';
-import {getWeather} from "./utils";
+import citySvg from "./components/icons/citySvg";
+import WeatherScreen from "./components/screens/WeatherScreen";
+import HourlyScreen from "./components/screens/HourlyScreen";
+import DailyScreen from "./components/screens/DailyScreen";
 
 const Tab = createBottomTabNavigator();
-
-const cityList = ['Гомель', 'Минск', 'Гродно', 'Витебск', 'Могилёв', 'Брест', 'Дрогичин', 'Болота',];
-
-const fetchData = async ({setLoading, setData, cityList}) => {
-    const dataList = []
-    setLoading(true)
-    await Promise.all(cityList.map(async (city) => {
-        await fetch(getWeather(city))
-            .then(response => response.json())
-            .then(data => {
-                dataList.push(data)
-                //console.log(data.weather[0].icon);
-            })
-    }))
-    setData(dataList)
-    setLoading(false)
-}
-
-const fetchCity = async ({setLoading, setData, text}) => {
-    setLoading(true)
-        await fetch(getWeather(text))
-            .then(response => response.json())
-            .then(data => {
-                setData(data)
-                console.log(data);
-            })
-    setLoading(false)
-}
-
-
-function WeatherScreen() {
-    const timeRef = useRef(null);
-    const [text, onChangeText] = React.useState('');
-    const [searchResult,setSearchResult] = useState()
-    const [data, setData] = useState();
-    const [loading, setLoading] = useState(true)
-
-    const temp = Math.trunc(data?.main?.temp - 273);
-
-    useEffect(() => {
-            fetchData({cityList, setLoading, setData})
-        },
-        [])
-
-    useEffect(() => {
-        if (text.length > 1) {
-            if(timeRef.current!== null) {
-                clearTimeout(timeRef.current)
-            }
-
-            timeRef.current = setTimeout(async () => {
-                console.log('fetch ' + text)
-                fetchCity({setLoading, setData: setSearchResult, text})
-                timeRef.current = null
-            }, 1500)
-        }
-    }, [text])
-
-    const onRefresh = () => fetchData({cityList, setLoading, setData})
-    return (
-        <SafeAreaView>
-            <StatusBar
-                animated={true}
-                barStyle={"dark-content"}/>
-            <TextInput
-                style={style.textInput}
-                placeholder='Enter city here...'
-                onChangeText={onChangeText}
-                value={text}
-            />
-            <FlatList
-                style={style.styleFlat}
-                contentContainerStyle={style.contentContainerStyle}
-                ItemSeparatorComponent={() => (
-                    <View style={style.viewFlat}/>
-                )}
-                refreshing={loading}
-                onRefresh={onRefresh}
-                columnWrapperStyle={style.columnWrapperStyle}
-                data={data}
-                ListEmptyComponent={<ActivityIndicator/>}
-                numColumns={2}
-                renderItem={({item}) => <CityBlock title={item.name} icon={item.weather[0].icon}
-                                                   temp={Math.trunc(item.main.temp - 273)}/>}
-            />
-        </SafeAreaView>
-    );
-}
-
-function DailyScreen() {
-    return (
-        <View style={style.dailyscreen}>
-            <Text>Daily!</Text>
-        </View>
-    );
-}
-
-function HourlyScreen() {
-    return (
-        <View style={style.hourlyscreen}>
-            <Text>Hourly!</Text>
-        </View>
-    );
-}
 
 function MyTabs() {
     return (
@@ -120,6 +17,7 @@ function MyTabs() {
                 options={{
                     headerShown: false,
                     tabBarLabel: 'City',
+                    tabBarIcon: ({focused, color, size}) => {<citySvg color={color}/>}
                 }}
             />
             <Tab.Screen
@@ -150,40 +48,4 @@ export default function App() {
     )
 }
 
-const style = StyleSheet.create({
-    textInput: {
-        paddingHorizontal: 16,
-        paddingVertical: 24,
-        borderWidth: 1,
-    },
-    contentContainerStyle:
-        {
-            justifyContent: 'center',
-            paddingHorizontal: 16,
-            paddingTop: 16
-        },
-    viewFlat: {
-        backgroundColor: "white",
-        height: 8
-    },
-    columnWrapperStyle: {
-        justifyContent: "space-between",
-    },
-    styleFlat: {
-        backgroundColor: 'white',
-        // flex:1
-        height: '100%'
-    },
-    dailyscreen: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    hourlyscreen: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
-
-})
 
