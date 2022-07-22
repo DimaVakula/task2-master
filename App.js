@@ -1,7 +1,7 @@
 import React from "react";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {NavigationContainer} from '@react-navigation/native';
-import citySvg from "./components/icons/citySvg";
+import СitySvg from "./components/icons/CitySvg";
 import WeatherScreen from "./components/screens/WeatherScreen";
 import HourlyScreen from "./components/screens/HourlyScreen";
 import DailyScreen from "./components/screens/DailyScreen";
@@ -12,12 +12,13 @@ function MyTabs() {
     return (
         <Tab.Navigator>
             <Tab.Screen
+                style={{position:"absolute",}}
                 name="City"
                 component={WeatherScreen}
                 options={{
                     headerShown: false,
                     tabBarLabel: 'City',
-                    tabBarIcon: ({focused, color, size}) => {<citySvg color={color}/>}
+                    tabBarIcon: ({ color}) => (<СitySvg color={color}/>)
                 }}
             />
             <Tab.Screen
