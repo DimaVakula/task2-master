@@ -22,15 +22,16 @@ const fetchData = async ({setLoading, setData, cityList}) => {
     setLoading(true)
     for (let i = 0; i < cityList.length; i++) {
         await Promise.all(cityList.map(async (city) => {
-            await fetch(getWeather(city))
+            console.log('++' + getWeather(cityList[i]))
+            await fetch(getWeather(cityList[i]))
                 .then(response => response.json())
                 .then(data => {
                     dataList.push(data)
                 })
-        }))
-    }
-    setData(dataList)
-    setLoading(false)
+        }}
+        setData(dataList)
+        setLoading(false)
+))
 }
 
 const fetchCity = async ({setLoading, setData, text}) => {
