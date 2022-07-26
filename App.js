@@ -1,7 +1,9 @@
 import React from "react";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {NavigationContainer} from '@react-navigation/native';
-import {CitySvg, HourlySvg, DailySvg} from "./components/icons/CitySvg";
+import {CitySvg} from "./components/icons/CitySvg";
+import {HourlySvg} from "./components/icons/HourlySvg";
+import {DailySvg} from "./components/icons/DailySvg";
 import WeatherScreen from "./components/screens/WeatherScreen";
 import HourlyScreen from "./components/screens/HourlyScreen";
 import DailyScreen from "./components/screens/DailyScreen";

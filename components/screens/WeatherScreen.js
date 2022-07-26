@@ -1,17 +1,18 @@
 import React, {useEffect, useRef, useState} from "react";
 import {
     ActivityIndicator,
-    FlatList,
+    FlatList, Image, Pressable,
     SafeAreaView,
     StatusBar,
     StyleSheet,
     TextInput,
     useColorScheme,
-    View
+    View,
 } from "react-native";
 import {CityBlock} from "../CityBlock";
 import {getWeather} from "../../utils";
 import {DarkTheme, LightTheme} from "../../constants";
+import {CrossSvg} from "./components/icons/CrossSvg";
 
 const cityList = ['Гомель', 'Минск', 'Гродно', 'Витебск', 'Могилёв', 'Брест', 'Дрогичин', 'Болота',];
 
@@ -36,7 +37,7 @@ const fetchCity = async ({setLoading, setData, text}) => {
         .then(response => response.json())
         .then(data => {
             setData(data)
-            console.log(data);
+                //console.log(data);
         })
     setLoading(false)
 }
@@ -82,6 +83,12 @@ function WeatherScreen() {
                 placeholderTextColor={scheme === 'dark' ? DarkTheme.colors.border : LightTheme.colors.border}
                 value={text}
             />
+            <View style={{backgroundColor: '#ff0000', position: 'absolute', height: 20, width: 20, marginTop: 40, alignSelf: 'flex-end'}}>
+            <Pressable>
+                <CrossSvg color={color} size={size}/>
+            </Pressable>
+            </View>
+
             <FlatList
                 style={styles.styleFlat}
                 contentContainerStyle={styles.contentContainerStyle}
@@ -103,6 +110,7 @@ function WeatherScreen() {
 
 const styles = StyleSheet.create({
     textInput: {
+        width: '100%',
         paddingHorizontal: 16,
         height: 64,
         borderWidth: 1,
