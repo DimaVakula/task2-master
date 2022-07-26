@@ -20,26 +20,27 @@ const cityList = ['Гомель', 'Минск', 'Гродно', 'Витебск'
 const fetchData = async ({setLoading, setData, cityList}) => {
     const dataList = []
     setLoading(true)
-    await Promise.all(cityList.map(async (city) => {
-        await fetch(getWeather(city))
-            .then(response => response.json())
-            .then(data => {
-                dataList.push(data)
-                //console.log(data.weather[0].icon);
-            })
-    }))
+    for (let i = 0; i < cityList.length; i++) {
+        await Promise.all(cityList.map(async (city) => {
+            await fetch(getWeather(city))
+                .then(response => response.json())
+                .then(data => {
+                    dataList.push(data)
+                })
+        }))
+    }
     setData(dataList)
     setLoading(false)
 }
 
 const fetchCity = async ({setLoading, setData, text}) => {
     setLoading(true)
-    await fetch(getWeather(text))
-        .then(response => response.json())
-        .then(data => {
-            setData(data)
+        await fetch(getWeather(text))
+            .then(response => response.json())
+            .then(data => {
+                setData(data)
                 //console.log(data);
-        })
+            })
     setLoading(false)
 }
 
@@ -73,7 +74,7 @@ function WeatherScreen() {
 
     const onRefresh = () => fetchData({cityList, setLoading, setData})
     return (
-        <SafeAreaView>
+        <SafeAreaView style={styles.safeArea}>
             <StatusBar
                 animated={true}
                 barStyle={"default"}/>
@@ -84,12 +85,11 @@ function WeatherScreen() {
                 placeholderTextColor={scheme === 'dark' ? DarkTheme.colors.border : LightTheme.colors.border}
                 value={text}
             />
-            <View style={{position: 'absolute', height: 30, width: 30, marginTop: 40, alignSelf: 'flex-end'}}>
-            <Pressable>
-                <CrossSvg color='#ff0000' size='22'/>
+            <View style={[styles.cross, scheme === 'dark' ? styles.crossDark : styles.crossLight]}>
+            <Pressable onPress={() => onChangeText('')}>
+                <CrossSvg/>
             </Pressable>
             </View>
-
             <FlatList
                 style={styles.styleFlat}
                 contentContainerStyle={styles.contentContainerStyle}
@@ -111,7 +111,6 @@ function WeatherScreen() {
 
 const styles = StyleSheet.create({
     textInput: {
-        width: '100%',
         paddingHorizontal: 16,
         height: 64,
         borderWidth: 1,
@@ -127,7 +126,7 @@ const styles = StyleSheet.create({
         color: DarkTheme.colors.text
     },
     styleFlat: {
-        height: '100%'
+
     },
     viewFlat: {
         height: 8
@@ -141,6 +140,20 @@ const styles = StyleSheet.create({
             paddingHorizontal: 16,
             paddingTop: 16
         },
+    cross:
+        {
+            position: 'absolute',
+            height: 30,
+            width: 30,
+            marginTop: 40,
+            right: 16,
+            alignSelf: 'flex-end'
+        },
+    crossDark:{backgroundColor: DarkTheme.colors.card, borderColor: DarkTheme.colors.border},
+    crossLight:{backgroundColor: LightTheme.colors.card, borderColor: LightTheme.colors.border},
+    safeArea:{
+        flex:1
+    }
 })
 
 export default WeatherScreen

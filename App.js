@@ -19,13 +19,16 @@ function MyTabs() {
     return (
         <NavigationContainer theme={scheme === 'dark' ? DarkTheme : LightTheme}>
             <Tab.Navigator
-                screenOptions={{tabBarActiveTintColor: scheme === 'dark' ? DarkTheme.colors.primary : LightTheme.colors.primary}}>
+                initialRouteName={'City'}
+                screenOptions={{tabBarActiveTintColor: scheme === 'dark' ? DarkTheme.colors.primary : LightTheme.colors.primary, animationEnabled: true, swipeEnabled: true,}}
+            >
                 <Tab.Screen
                     name="City"
                     component={WeatherScreen}
                     options={{
                         headerShown: false,
                         tabBarLabel: 'City',
+                        tabBarHideOnKeyboard: true,
                         tabBarIcon: ({color, size}) => (<CitySvg color={color} size={size}/>)
                     }}
                 />
@@ -54,7 +57,6 @@ function MyTabs() {
 }
 
 export default function App() {
-
     return (
         <MyTabs/>
     )
