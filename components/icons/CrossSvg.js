@@ -1,10 +1,10 @@
 import * as React from "react"
 import {Path, Svg} from "react-native-svg";
 
-export const CrossSvg = ({color="#00ffff", size=22}) => (
+export const CrossSvg = ({color="#00ffff", size=32}) => (
     <Svg
-        width={18}
-        height={18}
+        width={25}
+        height={25}
         fill="none"
         size={size}
     >

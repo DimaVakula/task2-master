@@ -1,7 +1,8 @@
 import React, {useEffect, useRef, useState} from "react";
 import {
     ActivityIndicator,
-    FlatList, Image, Pressable,
+    FlatList,
+    Pressable,
     SafeAreaView,
     StatusBar,
     StyleSheet,
@@ -12,7 +13,7 @@ import {
 import {CityBlock} from "../CityBlock";
 import {getWeather} from "../../utils";
 import {DarkTheme, LightTheme} from "../../constants";
-import {CrossSvg} from "./components/icons/CrossSvg";
+import {CrossSvg} from "../icons/CrossSvg";
 
 const cityList = ['Гомель', 'Минск', 'Гродно', 'Витебск', 'Могилёв', 'Брест', 'Дрогичин', 'Болота',];
 
@@ -83,9 +84,9 @@ function WeatherScreen() {
                 placeholderTextColor={scheme === 'dark' ? DarkTheme.colors.border : LightTheme.colors.border}
                 value={text}
             />
-            <View style={{backgroundColor: '#ff0000', position: 'absolute', height: 20, width: 20, marginTop: 40, alignSelf: 'flex-end'}}>
+            <View style={{position: 'absolute', height: 30, width: 30, marginTop: 40, alignSelf: 'flex-end'}}>
             <Pressable>
-                <CrossSvg color={color} size={size}/>
+                <CrossSvg color='#ff0000' size='22'/>
             </Pressable>
             </View>
 
