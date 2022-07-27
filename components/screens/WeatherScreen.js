@@ -20,18 +20,15 @@ const cityList = ['Гомель', 'Минск', 'Гродно', 'Витебск'
 const fetchData = async ({setLoading, setData, cityList}) => {
     const dataList = []
     setLoading(true)
-    for (let i = 0; i < cityList.length; i++) {
-        await Promise.all(cityList.map(async (city) => {
-            console.log('++' + getWeather(cityList[i]))
-            await fetch(getWeather(cityList[i]))
-                .then(response => response.json())
-                .then(data => {
-                    dataList.push(data)
-                })
-        }}
+            for(let i = 0; i < cityList.length; i++) {
+                    await fetch(getWeather(cityList[i]))
+                        .then(response => { return response.json()})
+                        .then(data => { return dataList.push(data)})
+               // console.log(cityList[i])
+            }
         setData(dataList)
         setLoading(false)
-))
+
 }
 
 const fetchCity = async ({setLoading, setData, text}) => {
