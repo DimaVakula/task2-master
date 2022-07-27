@@ -24,7 +24,6 @@ const fetchData = async ({setLoading, setData, cityList}) => {
                     await fetch(getWeather(cityList[i]))
                         .then(response => { return response.json()})
                         .then(data => { return dataList.push(data)})
-               // console.log(cityList[i])
             }
         setData(dataList)
         setLoading(false)
