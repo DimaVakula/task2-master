@@ -101,7 +101,8 @@ function WeatherScreen() {
                 numColumns={2}
                 renderItem={({item}) => <CityBlock title={item.name} icon={item.weather[0].icon}
                                                    temp={Math.trunc(item.main.temp - 273)}/>}
-            />) : searchResult == '' ? (console.log('404'),<View style={styles.failSearch}><FailSearchSvg/></View>) : (console.log('ЗДЕСЬ БУДЕТ ВАШ РЕНДЕР'))
+            />) : searchResult == '' ? (console.log('404'),<View style={styles.failSearch}><FailSearchSvg/></View>)
+                : <CityBlock title={data.name} icon={data.weather[0].icon} temp={Math.trunc(data.main.temp - 273)}/>
             }
         </SafeAreaView>
     );
