@@ -31,22 +31,50 @@ const fetchData = async ({setLoading, setData, cityList}) => {
 
 }
 
-const fetchCity = async ({setLoading, setData, text}) => {
+const fetchCity = async ({setLoading, setTown: setSearchResult, text}) => {
+    const getCity = []
     setLoading(true)
         await fetch(getWeather(text))
-            .then(response => response.json())
-            .then(data => {
-                setData(data)
-                //console.log(data);
+            .then(response => { return response.json()})
+            .then(searchResult => { return getCity.push(searchResult)
             })
+    setSearchResult(getCity)
     setLoading(false)
+}
+
+function renderData (loading, onRefresh, data) {
+    return (
+        <FlatList
+    style={styles.styleFlat}
+    contentContainerStyle={styles.contentContainerStyle}
+    ItemSeparatorComponent={() => (
+        <View style={styles.viewFlat}/>
+    )}
+    refreshing={loading}
+    onRefresh={onRefresh}
+    columnWrapperStyle={styles.columnWrapperStyle}
+    data={data}
+    ListEmptyComponent={<ActivityIndicator/>}
+    numColumns={2}
+    renderItem={({item}) => <CityBlock title={item.name} icon={item.weather[0].icon}
+                                       temp={Math.trunc(item.main.temp - 273)}
+    />
+        }
+        />
+    )
+}
+
+function renderCity (searchResult) {
+    return(
+        <CityBlock title={searchResult.name} icon={searchResult.weather[0].icon} temp={Math.trunc(searchResult.main.temp - 273)}/>
+    )
 }
 
 function WeatherScreen() {
     const timeRef = useRef(null);
     const [text, onChangeText] = React.useState('');
-    const [searchResult, setSearchResult] = useState()
     const [data, setData] = useState();
+    const [searchResult, setSearchResult] = useState()
     const [loading, setLoading] = useState(true)
     const scheme = useColorScheme()
 
@@ -63,7 +91,7 @@ function WeatherScreen() {
 
             timeRef.current = setTimeout(async () => {
                 console.log('fetch ' + text)
-                fetchCity({setLoading, setData: setSearchResult, text})
+                fetchCity({setLoading, setTown: setSearchResult, text})
                 console.log('+' + JSON.stringify(searchResult, null, 2))
                 timeRef.current = null
             }, 1500)
@@ -87,22 +115,10 @@ function WeatherScreen() {
                 <CrossSvg/>
             </Pressable>
             </View>
-            {text == '' ? (<FlatList
-                style={styles.styleFlat}
-                contentContainerStyle={styles.contentContainerStyle}
-                ItemSeparatorComponent={() => (
-                    <View style={styles.viewFlat}/>
-                )}
-                refreshing={loading}
-                onRefresh={onRefresh}
-                columnWrapperStyle={styles.columnWrapperStyle}
-                data={data}
-                ListEmptyComponent={<ActivityIndicator/>}
-                numColumns={2}
-                renderItem={({item}) => <CityBlock title={item.name} icon={item.weather[0].icon}
-                                                   temp={Math.trunc(item.main.temp - 273)}/>}
-            />) : searchResult == '' ? (console.log('404'),<View style={styles.failSearch}><FailSearchSvg/></View>)
-                : <CityBlock title={data.name} icon={data.weather[0].icon} temp={Math.trunc(data.main.temp - 273)}/>
+            {loading ? (<ActivityIndicator show={true}/>)
+                : text == '' ? (renderData(loading, onRefresh, data))
+             : searchResult === undefined ? (<View style={styles.failSearch}><FailSearchSvg/></View>)
+                :(renderCity(searchResult))
             }
         </SafeAreaView>
     );

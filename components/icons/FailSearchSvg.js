@@ -5,6 +5,7 @@ export const FailSearchSvg = ({color="#CDCDCD", size=22}) => (
     <Svg
         width={179}
         height={179}
+        fill="none"
         size={size}
     >
         <circle cx={89.5} cy={89.5} r={89.5} fill="#FAFAFA" />
