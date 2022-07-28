@@ -14,8 +14,9 @@ import {CityBlock} from "../CityBlock";
 import {getWeather} from "../../utils";
 import {DarkTheme, LightTheme} from "../../constants";
 import {CrossSvg} from "../icons/CrossSvg";
+import {FailSearchSvg} from "../icons/FailSearchSvg"
 
-const cityList = ['Гомель', 'Минск', 'Гродно', 'Витебск', 'Могилёв', 'Брест', 'Дрогичин', 'Болота',];
+const cityList = ['Гомель', 'Минск', 'Гродно', 'Витебск', 'Могилёв', 'Брест', 'Дрогичин', 'Болота'];
 
 const fetchData = async ({setLoading, setData, cityList}) => {
     const dataList = []
@@ -68,7 +69,6 @@ function WeatherScreen() {
             }, 1500)
         }
     }, [text])
-
     const onRefresh = () => fetchData({cityList, setLoading, setData})
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -87,7 +87,7 @@ function WeatherScreen() {
                 <CrossSvg/>
             </Pressable>
             </View>
-            <FlatList
+            {text == '' ? (<FlatList
                 style={styles.styleFlat}
                 contentContainerStyle={styles.contentContainerStyle}
                 ItemSeparatorComponent={() => (
@@ -101,7 +101,8 @@ function WeatherScreen() {
                 numColumns={2}
                 renderItem={({item}) => <CityBlock title={item.name} icon={item.weather[0].icon}
                                                    temp={Math.trunc(item.main.temp - 273)}/>}
-            />
+            />) : searchResult == '' ? (console.log('404'),<View style={styles.failSearch}><FailSearchSvg/></View>) : (console.log('ЗДЕСЬ БУДЕТ ВАШ РЕНДЕР'))
+            }
         </SafeAreaView>
     );
 }
@@ -150,6 +151,11 @@ const styles = StyleSheet.create({
     crossLight:{backgroundColor: LightTheme.colors.card, borderColor: LightTheme.colors.border},
     safeArea:{
         flex:1
+    },
+    failSearch: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor:'white'
     }
 })
 
