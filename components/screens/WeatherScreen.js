@@ -31,44 +31,22 @@ const fetchData = async ({setLoading, setData, cityList}) => {
 
 }
 
-const fetchCity = async ({setLoading, setTown: setSearchResult, text}) => {
+const fetchCity = async ({setLoading, setData: setSearchResult, text}) => {
     const getCity = []
     setLoading(true)
         await fetch(getWeather(text))
             .then(response => { return response.json()})
-            .then(searchResult => { return getCity.push(searchResult)
+            .then(data => { return getCity.push(data)
             })
     setSearchResult(getCity)
     setLoading(false)
 }
 
-function renderData (loading, onRefresh, data) {
-    return (
-        <FlatList
-    style={styles.styleFlat}
-    contentContainerStyle={styles.contentContainerStyle}
-    ItemSeparatorComponent={() => (
-        <View style={styles.viewFlat}/>
-    )}
-    refreshing={loading}
-    onRefresh={onRefresh}
-    columnWrapperStyle={styles.columnWrapperStyle}
-    data={data}
-    ListEmptyComponent={<ActivityIndicator/>}
-    numColumns={2}
-    renderItem={({item}) => <CityBlock title={item.name} icon={item.weather[0].icon}
-                                       temp={Math.trunc(item.main.temp - 273)}
-    />
-        }
-        />
-    )
-}
+    const SearchResultList = ({data})=>{
+        if(!data) return <View style={styles.failSearch}><FailSearchSvg/></View>
+        return <CityBlock title={data[0].name} icon={data[0].weather[0].icon} temp={Math.trunc(data[0].main.temp - 273)}/>
+    }
 
-function renderCity (searchResult) {
-    return(
-        <CityBlock title={searchResult.name} icon={searchResult.weather[0].icon} temp={Math.trunc(searchResult.main.temp - 273)}/>
-    )
-}
 
 function WeatherScreen() {
     const timeRef = useRef(null);
@@ -116,10 +94,23 @@ function WeatherScreen() {
             </Pressable>
             </View>
             {loading ? (<ActivityIndicator show={true}/>)
-                : text == '' ? (renderData(loading, onRefresh, data))
-             : searchResult === undefined ? (<View style={styles.failSearch}><FailSearchSvg/></View>)
-                :(renderCity(searchResult))
-            }
+                : text == '' ? <FlatList
+                    style={styles.styleFlat}
+                    contentContainerStyle={styles.contentContainerStyle}
+                    ItemSeparatorComponent={() => (
+                        <View style={styles.viewFlat}/>
+                    )}
+                    refreshing={loading}
+                    onRefresh={onRefresh}
+                    columnWrapperStyle={styles.columnWrapperStyle}
+                    data={data}
+                    ListEmptyComponent={<ActivityIndicator/>}
+                    numColumns={2}
+                    renderItem={({item}) => <CityBlock title={item.name} icon={item.weather[0].icon}
+                                                       temp={Math.trunc(item.main.temp - 273)}/>}
+                        />
+                    :<SearchResultList data={searchResult}/>
+                    }
         </SafeAreaView>
     );
 }
