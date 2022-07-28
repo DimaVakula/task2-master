@@ -21,31 +21,32 @@ const cityList = ['Гомель', 'Минск', 'Гродно', 'Витебск'
 const fetchData = async ({setLoading, setData, cityList}) => {
     const dataList = []
     setLoading(true)
-            for(let i = 0; i < cityList.length; i++) {
-                    await fetch(getWeather(cityList[i]))
-                        .then(response => { return response.json()})
-                        .then(data => { return dataList.push(data)})
-            }
-        setData(dataList)
-        setLoading(false)
+    for(let i = 0; i < cityList.length; i++) {
+        await fetch(getWeather(cityList[i]))
+            .then(response => { return response.json()})
+            .then(data => { return dataList.push(data)})
+    }
+    setData(dataList)
+    setLoading(false)
 
 }
 
 const fetchCity = async ({setLoading, setData: setSearchResult, text}) => {
     const getCity = []
     setLoading(true)
-        await fetch(getWeather(text))
-            .then(response => { return response.json()})
-            .then(data => { return getCity.push(data)
-            })
+    await fetch(getWeather(text))
+        .then(response => { return response.json()})
+        .then(data => { return getCity.push(data)
+        })
+    console.log(getCity)
     setSearchResult(getCity)
     setLoading(false)
 }
 
-    const SearchResultList = ({data})=>{
-        if(!data) return <View style={styles.failSearch}><FailSearchSvg/></View>
-        return <CityBlock title={data[0].name} icon={data[0].weather[0].icon} temp={Math.trunc(data[0].main.temp - 273)}/>
-    }
+const SearchResultList = ({data})=>{
+    if(!data) return <View style={styles.failSearch}><FailSearchSvg/></View>
+    return <CityBlock title={data[0].name} icon={data[0].weather[0].icon} temp={Math.trunc(data[0].main.temp - 273)}/>
+}
 
 
 function WeatherScreen() {
@@ -69,7 +70,7 @@ function WeatherScreen() {
 
             timeRef.current = setTimeout(async () => {
                 console.log('fetch ' + text)
-                fetchCity({setLoading, setTown: setSearchResult, text})
+                fetchCity({setLoading, setData: setSearchResult, text})
                 console.log('+' + JSON.stringify(searchResult, null, 2))
                 timeRef.current = null
             }, 1500)
@@ -89,28 +90,28 @@ function WeatherScreen() {
                 value={text}
             />
             <View style={[styles.cross, scheme === 'dark' ? styles.crossDark : styles.crossLight]}>
-            <Pressable onPress={() => onChangeText('')}>
-                <CrossSvg/>
-            </Pressable>
+                <Pressable onPress={() => onChangeText('')}>
+                    <CrossSvg/>
+                </Pressable>
             </View>
             {loading ? (<ActivityIndicator show={true}/>)
                 : text == '' ? <FlatList
-                    style={styles.styleFlat}
-                    contentContainerStyle={styles.contentContainerStyle}
-                    ItemSeparatorComponent={() => (
-                        <View style={styles.viewFlat}/>
-                    )}
-                    refreshing={loading}
-                    onRefresh={onRefresh}
-                    columnWrapperStyle={styles.columnWrapperStyle}
-                    data={data}
-                    ListEmptyComponent={<ActivityIndicator/>}
-                    numColumns={2}
-                    renderItem={({item}) => <CityBlock title={item.name} icon={item.weather[0].icon}
-                                                       temp={Math.trunc(item.main.temp - 273)}/>}
-                        />
+                        style={styles.styleFlat}
+                        contentContainerStyle={styles.contentContainerStyle}
+                        ItemSeparatorComponent={() => (
+                            <View style={styles.viewFlat}/>
+                        )}
+                        refreshing={loading}
+                        onRefresh={onRefresh}
+                        columnWrapperStyle={styles.columnWrapperStyle}
+                        data={data}
+                        ListEmptyComponent={<ActivityIndicator/>}
+                        numColumns={2}
+                        renderItem={({item}) => <CityBlock title={item.name} icon={item.weather[0].icon}
+                                                           temp={Math.trunc(item.main.temp - 273)}/>}
+                    />
                     :<SearchResultList data={searchResult}/>
-                    }
+            }
         </SafeAreaView>
     );
 }

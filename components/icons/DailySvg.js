@@ -1,7 +1,7 @@
-import {Path, Svg} from "react-native-svg";
-import * as React from "react";
+import * as React from "react"
+import {Svg, Path} from 'react-native-svg';
 
-export const DailySvg = ({color="#00ffff", size=22}) => (
+export const DailySvg = ({color="#000", size=22}) => (
     <Svg
         width={20}
         height={20}
