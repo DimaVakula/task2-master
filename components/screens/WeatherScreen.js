@@ -81,6 +81,7 @@ function WeatherScreen() {
             <StatusBar
                 animated={true}
                 barStyle={"default"}/>
+            <View style={styles.crossView}>
             <TextInput
                 style={[styles.textInput, scheme === 'dark' ? styles.textInputDark : styles.textInputLight]}
                 placeholder='Enter city here...'
@@ -88,8 +89,7 @@ function WeatherScreen() {
                 placeholderTextColor={scheme === 'dark' ? DarkTheme.colors.border : LightTheme.colors.border}
                 value={text}
             />
-            <View style={[styles.cross, scheme === 'dark' ? styles.crossDark : styles.crossLight]}>
-                <Pressable style={{position: 'absolute', alignSelf: 'center', paddingHorizontal: 16}} onPress={() => onChangeText('')}>
+                <Pressable style={styles.cross} onPress={() => onChangeText('')}>
                     <CrossSvg/>
                 </Pressable>
             </View>
@@ -146,20 +146,15 @@ const styles = StyleSheet.create({
             paddingHorizontal: 16,
             paddingTop: 16
         },
+    crossView:{
+        justifyContent:'center'
+    },
     cross:
         {
-            width: 18,
-            height: 18,
-            paddingHorizontal: 16,
             position: 'absolute',
-          //  height: 30,
-          //  width: 30,
-         //   marginTop: 40,
-          //  right: 16,
-            alignSelf: 'flex-end'
+            alignSelf: 'flex-end',
+            paddingHorizontal: 16
         },
-    crossDark:{backgroundColor: DarkTheme.colors.card, borderColor: DarkTheme.colors.border, color: 'white'},
-    crossLight:{backgroundColor: LightTheme.colors.card, borderColor: LightTheme.colors.border, color: 'black'},
     safeArea:{
         flex:1
     },
