@@ -7,6 +7,7 @@ const {width} = Dimensions.get('window')
 const blockSize = width * 0.45
 const cityBlockSize = width * 0.35
 
+
 export const City = ({title, temp, icon}) => {
     const scheme = useColorScheme()
     return(
