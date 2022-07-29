@@ -6,6 +6,7 @@ import {
     SafeAreaView,
     StatusBar,
     StyleSheet,
+    Text,
     TextInput,
     useColorScheme,
     View,
@@ -35,16 +36,15 @@ const fetchCity = async ({setLoading, setData: setSearchResult, text}) => {
     setLoading(true)
     await fetch(getWeather(text))
         .then(response => { return response.json()})
-        .then(data => { return getCity.push(data)
+        .then(data => { return getCity.push(data), setSearchResult(getCity)
         })
-    setSearchResult(getCity)
     setLoading(false)
 }
 
-const SearchResultList = ({data})=>{
+const SearchResultList = ({data,text})=>{
     const scheme = useColorScheme()
-    if(!data || !data[0].weather[0].icon) return <View style={[styles.failSearch, scheme === 'dark' ? styles.failSearchDark : styles.failSearchLight]}><FailSearchSvg/></View>
-    else if(data[0].cod == '404') return <View style={[styles.failSearch, scheme === 'dark' ? styles.failSearchDark : styles.failSearchLight]}><FailSearchSvg/></View>
+    if(!data || data[0].cod === '404' || !data[0].weather[0].icon )
+        return <View style={[styles.failSearch, scheme === 'dark' ? styles.failSearchDark : styles.failSearchLight]}><FailSearchSvg/><Text style={[styles.failSearchText,scheme === 'dark' ? styles.failSearchLightText : styles.failSearchDarkText]}>No data for {text}</Text></View>
     return <CityBlock title={data[0].name} icon={data[0].weather[0].icon} temp={Math.trunc(data[0].main.temp - 273)}/>
 }
 
@@ -89,7 +89,7 @@ function WeatherScreen() {
                 value={text}
             />
             <View style={[styles.cross, scheme === 'dark' ? styles.crossDark : styles.crossLight]}>
-                <Pressable onPress={() => onChangeText('')}>
+                <Pressable style={{position: 'absolute', alignSelf: 'center', paddingHorizontal: 16}} onPress={() => onChangeText('')}>
                     <CrossSvg/>
                 </Pressable>
             </View>
@@ -109,7 +109,7 @@ function WeatherScreen() {
                         renderItem={({item}) => <CityBlock title={item.name} icon={item.weather[0].icon}
                                                            temp={Math.trunc(item.main.temp - 273)}/>}
                     />
-                    :<SearchResultList data={searchResult}/>
+                    :<SearchResultList data={searchResult} text={text}/>
             }
         </SafeAreaView>
     );
@@ -148,15 +148,18 @@ const styles = StyleSheet.create({
         },
     cross:
         {
+            width: 18,
+            height: 18,
+            paddingHorizontal: 16,
             position: 'absolute',
-            height: 30,
-            width: 30,
-            marginTop: 40,
-            right: 16,
+          //  height: 30,
+          //  width: 30,
+         //   marginTop: 40,
+          //  right: 16,
             alignSelf: 'flex-end'
         },
-    crossDark:{backgroundColor: DarkTheme.colors.card, borderColor: DarkTheme.colors.border},
-    crossLight:{backgroundColor: LightTheme.colors.card, borderColor: LightTheme.colors.border},
+    crossDark:{backgroundColor: DarkTheme.colors.card, borderColor: DarkTheme.colors.border, color: 'white'},
+    crossLight:{backgroundColor: LightTheme.colors.card, borderColor: LightTheme.colors.border, color: 'black'},
     safeArea:{
         flex:1
     },
@@ -167,6 +170,18 @@ const styles = StyleSheet.create({
     },
     failSearchDark:{backgroundColor: DarkTheme.colors.card, borderColor: DarkTheme.colors.border},
     failSearchLight:{backgroundColor: LightTheme.colors.card, borderColor: LightTheme.colors.border},
+    failSearchText:{
+        fontSize:24,
+        width:327,
+        height:28,
+        lineHeight:28,
+        textAlign: 'center',
+        letterSpacing: 0.2,
+        flexGrow: 0,
+        top: 24,
+    },
+    failSearchLightText:{color: 'white'},
+    failSearchDarkText:{color: 'black'},
 })
 
 export default WeatherScreen

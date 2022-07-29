@@ -29,7 +29,7 @@ export const CityBlock = ({title, temp, icon}) => {
 export const styles = StyleSheet.create({
     rect: {
         boxSizing: 'border-box',
-        borderWidth: 1,
+        borderWidth: 2,
         width: blockSize,
         height: blockSize,
         borderRadius: 5,
