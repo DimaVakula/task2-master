@@ -28,7 +28,6 @@ const fetchData = async ({setLoading, setData, cityList}) => {
             .then(data => { return dataList.push(data), setData(dataList)})
     }
     setLoading(false)
-
 }
 
 const fetchCity = async ({setLoading, setData: setSearchResult, text}) => {
