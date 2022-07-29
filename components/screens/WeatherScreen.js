@@ -24,9 +24,8 @@ const fetchData = async ({setLoading, setData, cityList}) => {
     for(let i = 0; i < cityList.length; i++) {
         await fetch(getWeather(cityList[i]))
             .then(response => { return response.json()})
-            .then(data => { return dataList.push(data)})
+            .then(data => { return dataList.push(data), setData(dataList)})
     }
-    setData(dataList)
     setLoading(false)
 
 }
@@ -38,16 +37,16 @@ const fetchCity = async ({setLoading, setData: setSearchResult, text}) => {
         .then(response => { return response.json()})
         .then(data => { return getCity.push(data)
         })
-    console.log(getCity)
     setSearchResult(getCity)
     setLoading(false)
 }
 
 const SearchResultList = ({data})=>{
-    if(!data) return <View style={styles.failSearch}><FailSearchSvg/></View>
+    const scheme = useColorScheme()
+    if(!data || !data[0].weather[0].icon) return <View style={[styles.failSearch, scheme === 'dark' ? styles.failSearchDark : styles.failSearchLight]}><FailSearchSvg/></View>
+    else if(data[0].cod == '404') return <View style={[styles.failSearch, scheme === 'dark' ? styles.failSearchDark : styles.failSearchLight]}><FailSearchSvg/></View>
     return <CityBlock title={data[0].name} icon={data[0].weather[0].icon} temp={Math.trunc(data[0].main.temp - 273)}/>
 }
-
 
 function WeatherScreen() {
     const timeRef = useRef(null);
@@ -71,7 +70,7 @@ function WeatherScreen() {
             timeRef.current = setTimeout(async () => {
                 console.log('fetch ' + text)
                 fetchCity({setLoading, setData: setSearchResult, text})
-                console.log('+' + JSON.stringify(searchResult, null, 2))
+                console.log('++' + JSON.stringify(searchResult, null, 2))
                 timeRef.current = null
             }, 1500)
         }
@@ -162,10 +161,12 @@ const styles = StyleSheet.create({
         flex:1
     },
     failSearch: {
+        flex:1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor:'white'
-    }
+    },
+    failSearchDark:{backgroundColor: DarkTheme.colors.card, borderColor: DarkTheme.colors.border},
+    failSearchLight:{backgroundColor: LightTheme.colors.card, borderColor: LightTheme.colors.border},
 })
 
 export default WeatherScreen
