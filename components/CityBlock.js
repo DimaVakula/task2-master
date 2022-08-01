@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, View, Image, useColorScheme} from "react-native";
 import {styles} from "./style/Style";
 
-export const City = ({title, temp, icon}) => {
+export const CityListitems = ({title, temp, icon}) => {
     const scheme = useColorScheme()
     return(
         <View style={styles.oneCity}>
@@ -15,7 +15,7 @@ export const City = ({title, temp, icon}) => {
                  {temp}
             </Text>
             </View>
-            <View style={{justifyContent: 'center'}}>
+            <View style={{alignItems:'flex-end'}}>
             <Image
                 style={styles.imageOne}
                 source={{

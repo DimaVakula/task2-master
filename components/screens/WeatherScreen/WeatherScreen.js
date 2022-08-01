@@ -10,7 +10,7 @@ import {
     useColorScheme,
     View,
 } from "react-native";
-import {CityBlock,City} from "../../CityBlock";
+import {CityBlock,CityListitems} from "../../CityBlock";
 import {getWeather} from "../../../utils";
 import {DarkTheme, LightTheme} from "../../../constants";
 import {CrossSvg} from "../../icons/CrossSvg";
@@ -44,7 +44,7 @@ const SearchResultList = ({data,text})=>{
     const scheme = useColorScheme()
     if(!data || data[0].cod === '404' || !data[0].weather[0].icon )
         return <View style={[styles.failSearch, scheme === 'dark' ? styles.failSearchDark : styles.failSearchLight]}><FailSearchSvg/><Text style={[styles.failSearchText,scheme === 'dark' ? styles.failSearchLightText : styles.failSearchDarkText]}>No data for {text}</Text></View>
-    return <City title={data[0].name} icon={data[0].weather[0].icon} temp={Math.trunc(data[0].main.temp - 273)}/>
+    return <CityListitems title={data[0].name} icon={data[0].weather[0].icon} temp={Math.trunc(data[0].main.temp - 273)}/>
 }
 
 function WeatherScreen() {
