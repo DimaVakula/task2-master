@@ -2,9 +2,9 @@ import React from "react";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {NavigationContainer} from '@react-navigation/native';
 import {CitySvg, HourlySvg, DailySvg} from "./components/icons/CitySvg";
-import WeatherScreen from "./components/screens/WeatherScreen";
-import HourlyScreen from "./components/screens/HourlyScreen";
-import DailyScreen from "./components/screens/DailyScreen";
+import WeatherScreen from "./components/screens/WeatherScreen/WeatherScreen";
+import HourlyScreen from "./components/screens/HourlyScreen/HourlyScreen";
+import DailyScreen from "./components/screens/DailyScreen/DailyScreen";
 import {useColorScheme} from "react-native";
 import {DarkTheme, LightTheme} from "./constants";
 
