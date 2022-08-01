@@ -21,9 +21,6 @@ export const styles = StyleSheet.create({
         borderColor: DarkTheme.colors.border,
         color: DarkTheme.colors.text
     },
-    styleFlat: {
-
-    },
     viewFlat: {
         height: 8
     },
@@ -114,12 +111,12 @@ export const styles = StyleSheet.create({
         flexGrow: 0
     },
     oneCity: {
-        backgroundColor: 'green',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%'
 
     },
     imageOne:{
-        backgroundColor: 'red',
         width: 64,
         height: 64
     },

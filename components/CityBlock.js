@@ -6,8 +6,8 @@ export const CityListitems = ({title, temp, icon}) => {
     const scheme = useColorScheme()
     return(
         <View style={styles.oneCity}>
-            {/**<Text style={[styles.searchText,scheme === 'dark' ? styles.textDark : styles.textLight]}>search result</Text>**/}
-            <View style={{backgroundColor: 'yellow', justifyContent: 'space-between'}}>
+            {/****/}
+            <View>
             <Text style={[styles.titleOne, scheme === 'dark' ? styles.textDark : styles.textLight]}>
                 {title}
             </Text>
@@ -15,7 +15,7 @@ export const CityListitems = ({title, temp, icon}) => {
                  {temp}
             </Text>
             </View>
-            <View style={{alignItems:'flex-end'}}>
+            <View>
             <Image
                 style={styles.imageOne}
                 source={{

@@ -41,10 +41,30 @@ const fetchCity = async ({setLoading, setData: setSearchResult, text}) => {
 }
 
 const SearchResultList = ({data,text})=>{
+    const [searchResult, setSearchResult] = useState()
+    const [loading, setLoading] = useState(false)
+    const onRefresh = () => fetchCity({setLoading, setData: setSearchResult, text})
     const scheme = useColorScheme()
     if(!data || data[0].cod === '404' || !data[0].weather[0].icon )
         return <View style={[styles.failSearch, scheme === 'dark' ? styles.failSearchDark : styles.failSearchLight]}><FailSearchSvg/><Text style={[styles.failSearchText,scheme === 'dark' ? styles.failSearchLightText : styles.failSearchDarkText]}>No data for {text}</Text></View>
-    return <CityListitems title={data[0].name} icon={data[0].weather[0].icon} temp={Math.trunc(data[0].main.temp - 273)}/>
+    return (<SafeAreaView style={styles.safeArea}>
+        <View>
+            <Text style={[styles.searchText,scheme === 'dark' ? styles.textDark : styles.textLight]}>search result</Text>
+        </View>
+    <FlatList
+        contentContainerStyle={styles.contentContainerStyle}
+        ItemSeparatorComponent={() => (
+            <View style={styles.viewFlat}/>
+        )}
+        refreshing={loading}
+        onRefresh={onRefresh}
+        columnWrapperStyle={styles.columnWrapperStyle}
+        data={data}
+        ListEmptyComponent={<ActivityIndicator/>}
+        numColumns={2}
+        renderItem={({item}) => <CityListitems title={data[0].name} icon={data[0].weather[0].icon} temp={Math.trunc(data[0].main.temp - 273)}/>}
+            />
+    </SafeAreaView>)
 }
 
 function WeatherScreen() {
@@ -94,7 +114,6 @@ function WeatherScreen() {
             </View>
             {loading ? (<ActivityIndicator show={true}/>)
                 : text == '' ? <FlatList
-                        style={styles.styleFlat}
                         contentContainerStyle={styles.contentContainerStyle}
                         ItemSeparatorComponent={() => (
                             <View style={styles.viewFlat}/>
