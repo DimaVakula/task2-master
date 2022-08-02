@@ -67,6 +67,34 @@ const SearchResultList = ({data,text})=>{
     </SafeAreaView>)
 }
 
+const CrossView = (text, onChangeText) => {
+    const scheme = useColorScheme()
+    if (text.length > 0)
+    return(
+        <View style={styles.crossView}>
+            <TextInput
+                style={[styles.textInput, scheme === 'dark' ? styles.textInputDark : styles.textInputLight]}
+                placeholder='Enter city here...'
+                onChangeText={text => {onChangeText(text.trim(),true)}}
+                placeholderTextColor={scheme === 'dark' ? DarkTheme.colors.border : LightTheme.colors.border}
+                value={text}
+            />
+        <Pressable style={styles.cross} onPress={() => onChangeText('')}>
+            <CrossSvg/>
+        </Pressable>
+        </View>
+    )
+    return (<View style={styles.crossView}>
+        <TextInput
+            style={[styles.textInput, scheme === 'dark' ? styles.textInputDark : styles.textInputLight]}
+            placeholder='Enter city here...'
+            onChangeText={text => {onChangeText(text.trim(),true)}}
+            placeholderTextColor={scheme === 'dark' ? DarkTheme.colors.border : LightTheme.colors.border}
+            value={text}
+        />
+    </View>)
+}
+
 function WeatherScreen() {
     const timeRef = useRef(null);
     const [text, onChangeText] = React.useState('');
@@ -99,19 +127,11 @@ function WeatherScreen() {
         <SafeAreaView style={styles.safeArea}>
             <StatusBar
                 animated={true}
-                barStyle={"default"}/>
-            <View style={styles.crossView}>
-            <TextInput
-                style={[styles.textInput, scheme === 'dark' ? styles.textInputDark : styles.textInputLight]}
-                placeholder='Enter city here...'
-                onChangeText={onChangeText}
-                placeholderTextColor={scheme === 'dark' ? DarkTheme.colors.border : LightTheme.colors.border}
-                value={text}
+                barStyle={"default"}
             />
-                <Pressable style={styles.cross} onPress={() => onChangeText('')}>
-                    <CrossSvg/>
-                </Pressable>
-            </View>
+
+                <CrossView text={text} onChangeText={onChangeText}/>
+
             {loading ? (<ActivityIndicator show={true}/>)
                 : text == '' ? <FlatList
                         contentContainerStyle={styles.contentContainerStyle}
