@@ -2,11 +2,10 @@ import React from 'react';
 import {Text, View, Image, useColorScheme} from "react-native";
 import {styles} from "./style/Style";
 
-export const CityListitems = ({title, temp, icon}) => {
+export const CityListItems = ({title, temp, icon}) => {
     const scheme = useColorScheme()
     return(
         <View style={styles.oneCity}>
-            {/****/}
             <View>
             <Text style={[styles.titleOne, scheme === 'dark' ? styles.textDark : styles.textLight]}>
                 {title}

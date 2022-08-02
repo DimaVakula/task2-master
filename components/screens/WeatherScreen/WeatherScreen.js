@@ -10,7 +10,7 @@ import {
     useColorScheme,
     View,
 } from "react-native";
-import {CityBlock,CityListitems} from "../../CityBlock";
+import {CityBlock,CityListItems} from "../../CityBlock";
 import {getWeather} from "../../../utils";
 import {DarkTheme, LightTheme} from "../../../constants";
 import {CrossSvg} from "../../icons/CrossSvg";
@@ -40,12 +40,10 @@ const fetchCity = async ({setLoading, setData: setSearchResult, text}) => {
     setLoading(false)
 }
 
-const SearchResultList = ({data,text})=>{
-    const [searchResult, setSearchResult] = useState()
-    const [loading, setLoading] = useState(false)
-    const onRefresh = () => fetchCity({setLoading, setData: setSearchResult, text})
+const SearchResultList = (props)=>{
+    props.onRefresh
     const scheme = useColorScheme()
-    if(!data || data[0].cod === '404' || !data[0].weather[0].icon )
+    if(!props.data || props.data[0].cod === '404' || !props.data[0].weather[0].icon )
         return <View style={[styles.failSearch, scheme === 'dark' ? styles.failSearchDark : styles.failSearchLight]}><FailSearchSvg/><Text style={[styles.failSearchText,scheme === 'dark' ? styles.failSearchLightText : styles.failSearchDarkText]}>No data for {text}</Text></View>
     return (<SafeAreaView style={styles.safeArea}>
         <View>
@@ -62,37 +60,27 @@ const SearchResultList = ({data,text})=>{
         data={data}
         ListEmptyComponent={<ActivityIndicator/>}
         numColumns={2}
-        renderItem={({item}) => <CityListitems title={data[0].name} icon={data[0].weather[0].icon} temp={Math.trunc(data[0].main.temp - 273)}/>}
+        renderItem={({item}) => <CityListItems title={data[0].name} icon={data[0].weather[0].icon} temp={Math.trunc(data[0].main.temp - 273)}/>}
             />
     </SafeAreaView>)
 }
 
-const CrossView = (text, onChangeText) => {
+const CrossView = (props) => {
     const scheme = useColorScheme()
-    if (text.length > 0)
     return(
         <View style={styles.crossView}>
             <TextInput
                 style={[styles.textInput, scheme === 'dark' ? styles.textInputDark : styles.textInputLight]}
                 placeholder='Enter city here...'
-                onChangeText={text => {onChangeText(text.trim(),true)}}
+                onChangeText={text => props.onChangeText(text.trim())}
                 placeholderTextColor={scheme === 'dark' ? DarkTheme.colors.border : LightTheme.colors.border}
-                value={text}
+                value={props.text}
             />
-        <Pressable style={styles.cross} onPress={() => onChangeText('')}>
+            {props.text.length > 0&& (<Pressable style={styles.cross} onPress={() => props.onChangeText('')}>
             <CrossSvg/>
-        </Pressable>
+        </Pressable>)}
         </View>
     )
-    return (<View style={styles.crossView}>
-        <TextInput
-            style={[styles.textInput, scheme === 'dark' ? styles.textInputDark : styles.textInputLight]}
-            placeholder='Enter city here...'
-            onChangeText={text => {onChangeText(text.trim(),true)}}
-            placeholderTextColor={scheme === 'dark' ? DarkTheme.colors.border : LightTheme.colors.border}
-            value={text}
-        />
-    </View>)
 }
 
 function WeatherScreen() {
@@ -129,11 +117,9 @@ function WeatherScreen() {
                 animated={true}
                 barStyle={"default"}
             />
-
                 <CrossView text={text} onChangeText={onChangeText}/>
-
             {loading ? (<ActivityIndicator show={true}/>)
-                : text == '' ? <FlatList
+                : text === '' ? <FlatList
                         contentContainerStyle={styles.contentContainerStyle}
                         ItemSeparatorComponent={() => (
                             <View style={styles.viewFlat}/>
@@ -147,7 +133,7 @@ function WeatherScreen() {
                         renderItem={({item}) => <CityBlock title={item.name} icon={item.weather[0].icon}
                                                            temp={Math.trunc(item.main.temp - 273)}/>}
                     />
-                    :<SearchResultList data={searchResult} text={text}/>
+                    :<SearchResultList data={searchResult} text={text} loading={loading}/>
             }
         </SafeAreaView>
     );
