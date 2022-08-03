@@ -61,4 +61,19 @@ export const styles = StyleSheet.create({
     },
     failSearchLightText: {color: 'white'},
     failSearchDarkText: {color: 'black'},
+    searchText: {
+        paddingHorizontal: 16,
+        paddingVertical: 16,
+        width: 327,
+        height: 18,
+        fontStyle: 'normal',
+        fontSize: 13,
+        lineHeight: 18,
+        display: 'flex',
+        alignItems: 'center',
+        letterSpacing: -0.0866667,
+        textTransform: 'uppercase',
+        color: '#000',
+        flexGrow: 0
+    }
 })
