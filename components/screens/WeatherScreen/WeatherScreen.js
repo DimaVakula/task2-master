@@ -118,7 +118,7 @@ function WeatherScreen() {
             />
                 <CrossView text={text} onChangeText={onChangeText}/>
             {loading ? (<ActivityIndicator show={true}/>)
-                : text === '' ? <FlatList
+                 : text === ''  ? <FlatList
                         contentContainerStyle={styles.contentContainerStyle}
                         ItemSeparatorComponent={() => (
                             <View style={styles.viewFlat}/>
