@@ -1,20 +1,15 @@
 import {Text, View, StyleSheet} from "react-native";
 import React from "react";
+import {styles} from "./Styles"
 
 function HourlyScreen() {
     return (
-        <View style={style.hourlyscreen}>
+        <View style={styles.hourlyScreen}>
             <Text>Hourly!</Text>
         </View>
     );
 }
 
-const style = StyleSheet.create({
-    hourlyscreen: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-})
+
 
 export default HourlyScreen

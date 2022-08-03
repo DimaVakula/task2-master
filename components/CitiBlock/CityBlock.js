@@ -1,6 +1,8 @@
 import React from 'react';
 import {Text, View, Image, useColorScheme} from "react-native";
-import {styles} from "./style/Style";
+import {styles} from "./Styles";
+
+
 
 export const CityListItems = ({title, temp, icon}) => {
     const scheme = useColorScheme()
