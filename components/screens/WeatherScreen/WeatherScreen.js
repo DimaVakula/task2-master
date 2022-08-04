@@ -132,7 +132,7 @@ function WeatherScreen() {
     } else if (location) {
         cord = JSON.stringify(location);
     }
-    console.log(cord)
+    console.log('geolocation ' +cord)
 
     const onRefresh = () => fetchData({cityList, setLoading, setData})
     return (
