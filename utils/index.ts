@@ -1,1 +1,2 @@
 export const getWeather = (city) => `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=fc56adffbf7df45c88b352092b9406ee`
+export const locationWeather = (lat,lon) => `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=fc56adffbf7df45c88b352092b9406ee`

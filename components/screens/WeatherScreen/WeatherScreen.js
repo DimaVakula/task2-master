@@ -11,13 +11,14 @@ import {
     View,
 } from "react-native";
 import {CityBlock,CityListItems} from "../../CitiBlock/CityBlock";
-import {getWeather} from "../../../utils";
+import {getWeather, locationWeather} from "../../../utils";
 import {DarkTheme, LightTheme} from "../../../constants";
 import {CrossSvg} from "../../icons/CrossSvg";
 import {FailSearchSvg} from "../../icons/FailSearchSvg";
 import {styles} from "./Styles"
+import * as Location from 'expo-location';
 
-const cityList = ['Гомель', 'Минск', 'Гродно', 'Витебск', 'Могилёв', 'Брест', 'Дрогичин', 'Болота'];
+const cityList = ['Гомель', 'Минск', 'Гродно', 'Витебск', 'Могилёв', 'Брест'];
 
 const fetchData = async ({setLoading, setData, cityList}) => {
     const dataList = []
@@ -84,10 +85,12 @@ const CrossView = (props) => {
 
 function WeatherScreen() {
     const timeRef = useRef(null);
-    const [text, onChangeText] = React.useState('');
+    const [text, onChangeText] = React.useState('')
     const [data, setData] = useState();
     const [searchResult, setSearchResult] = useState()
     const [loading, setLoading] = useState(true)
+    const [location, setLocation] = useState(null)
+    const [errorMsg, setErrorMsg] = useState(null)
     const scheme = useColorScheme()
 
     useEffect(() => {
@@ -109,6 +112,28 @@ function WeatherScreen() {
             }, 1500)
         }
     }, [text])
+
+    useEffect(() => {
+        (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                setErrorMsg('Permission to access location was denied');
+                return;
+            }
+
+            let location = await Location.getCurrentPositionAsync({});
+            setLocation(location);
+        })();
+    }, []);
+
+    let cord = 'Waiting..';
+    if (errorMsg) {
+        cord = errorMsg;
+    } else if (location) {
+        cord = JSON.stringify(location);
+    }
+    console.log(cord)
+
     const onRefresh = () => fetchData({cityList, setLoading, setData})
     return (
         <SafeAreaView style={styles.safeArea}>
