@@ -5,11 +5,10 @@ import {CitySvg, HourlySvg, DailySvg} from "./components/icons/CitySvg";
 import WeatherScreen from "./components/screens/WeatherScreen/WeatherScreen";
 import HourlyScreen from "./components/screens/HourlyScreen/HourlyScreen";
 import DailyScreen from "./components/screens/DailyScreen/DailyScreen";
-import {
-    CurrentWeatherScreen
-} from "./components/screens/CurrentWeatherScreen/CurrentWeatherScreen";
 import {useColorScheme} from "react-native";
 import {DarkTheme, LightTheme} from "./constants";
+import {WeatherScreenNavigator} from "./components/CitiBlock/CityBlock";
+
 
 const Tab = createBottomTabNavigator();
 
@@ -20,26 +19,15 @@ function MyTabs() {
         <NavigationContainer theme={scheme === 'dark' ? DarkTheme : LightTheme}>
             <Tab.Navigator
                 screenOptions={{tabBarActiveTintColor: scheme === 'dark' ? DarkTheme.colors.primary : LightTheme.colors.primary}}>
-                <Tab.Group>
                 <Tab.Screen
                     name="City"
-                    component={WeatherScreen}
+                    component={WeatherScreenNavigator}
                     options={{
                         headerShown: false,
                         tabBarLabel: 'City',
                         tabBarIcon: ({color, size}) => (<CitySvg color={color} size={size}/>)
                     }}
                 />
-                <Tab.Screen
-                    name="Current"
-                    component={CurrentWeatherScreen}
-                    options={{
-                        headerShown: false,
-                        tabBarLabel: 'Current',
-                        tabBarIcon: ({color, size}) => (<CitySvg color={color} size={size}/>)
-                    }}
-                />
-                </Tab.Group>
                 <Tab.Screen
                     name="Daily"
                     component={DailyScreen}

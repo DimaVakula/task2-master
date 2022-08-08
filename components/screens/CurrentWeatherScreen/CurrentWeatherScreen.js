@@ -37,8 +37,10 @@ const WeatherRender = (props) => {
     )
 }
 
-export function CurrentWeatherScreen () {
+export function CurrentWeatherScreen ({route}) {
     var date = new Date().toLocaleString()
+    const {city,icon,temp} = route.params
+
     return(
         <WeatherRender city={city} data={date} icon={icon} temp={temp}/>
     )
