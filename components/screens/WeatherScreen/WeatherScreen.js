@@ -18,6 +18,7 @@ import {FailSearchSvg} from "../../icons/FailSearchSvg";
 import {styles} from "./Styles"
 import * as Location from 'expo-location';
 
+
 const cityList = ['Гомель', 'Минск', 'Гродно', 'Витебск', 'Могилёв', 'Брест'];
 
 const fetchData = async ({setLoading, setData, cityList}) => {
@@ -92,6 +93,7 @@ function WeatherScreen() {
     const [location, setLocation] = useState(null)
     const [errorMsg, setErrorMsg] = useState(null)
     const scheme = useColorScheme()
+    let cord = 'Waiting..';
 
     useEffect(() => {
             fetchData({cityList, setLoading, setData})
@@ -123,16 +125,16 @@ function WeatherScreen() {
 
             let location = await Location.getCurrentPositionAsync({});
             setLocation(location);
+            if (errorMsg) {
+                cord = errorMsg;
+            } else if (location) {
+                cord = JSON.stringify(location);
+            }
+            console.log('geolocation ' +cord)
         })();
-    }, []);
+    }, [cord]);
 
-    let cord = 'Waiting..';
-    if (errorMsg) {
-        cord = errorMsg;
-    } else if (location) {
-        cord = JSON.stringify(location);
-    }
-    console.log('geolocation ' +cord)
+
 
     const onRefresh = () => fetchData({cityList, setLoading, setData})
     return (

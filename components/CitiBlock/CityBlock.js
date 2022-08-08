@@ -1,7 +1,7 @@
 import React from 'react';
-import {Text, View, Image, useColorScheme} from "react-native";
+import {Text, View, Image, useColorScheme, Pressable} from "react-native";
 import {styles} from "./Styles";
-
+import {useNavigation} from '@react-navigation/native'
 
 
 export const CityListItems = (props) => {
@@ -30,7 +30,14 @@ export const CityListItems = (props) => {
 
 export const CityBlock = (props) => {
     const scheme = useColorScheme()
+    const navigation = useNavigation()
     return (
+        <Pressable onPress={() => navigation.navigate(
+            'Current',
+            {city : {props.title},
+             icon: {props.icon},
+            temp: {props.temp}}
+        )}>
         <View style={[styles.rect, scheme === 'dark' ? styles.rectDark : styles.rectLight]}>
             <Text style={[styles.title, scheme === 'dark' ? styles.textDark : styles.textLight]}>
                 {props.title}
@@ -44,5 +51,6 @@ export const CityBlock = (props) => {
                 {props.temp}
             </Text>
         </View>
+        </Pressable>
     )
 }
