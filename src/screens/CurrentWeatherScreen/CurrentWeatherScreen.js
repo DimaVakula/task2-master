@@ -1,7 +1,7 @@
 import react from "react";
 import {Text, View, SafeAreaView, Pressable, Image, useColorScheme} from "react-native";
 import {styles} from "./Styles";
-import {CursorSvg} from "../../icons/CursorSvg";
+import {CursorSvg} from "../../components/icons/CursorSvg";
 import React from "react";
 import {useNavigation} from '@react-navigation/native'
 

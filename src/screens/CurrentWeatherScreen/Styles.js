@@ -1,5 +1,5 @@
 import {StyleSheet} from "react-native";
-import {DarkTheme, LightTheme} from "../../../constants";
+import {DarkTheme, LightTheme} from "../../constants";
 
 export const styles = StyleSheet.create({
     SafeArea:{

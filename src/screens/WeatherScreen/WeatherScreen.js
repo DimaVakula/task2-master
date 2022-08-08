@@ -10,11 +10,11 @@ import {
     useColorScheme,
     View,
 } from "react-native";
-import {CityBlock,CityListItems} from "../../CitiBlock/CityBlock";
-import {getWeather, locationWeather} from "../../../utils";
-import {DarkTheme, LightTheme} from "../../../constants";
-import {CrossSvg} from "../../icons/CrossSvg";
-import {FailSearchSvg} from "../../icons/FailSearchSvg";
+import {CityBlock,CityListItems} from "../../components/CitiBlock/CityBlock";
+import {getWeather, locationWeather} from "../../utils";
+import {DarkTheme, LightTheme} from "../../constants";
+import {CrossSvg} from "../../components/icons/CrossSvg";
+import {FailSearchSvg} from "../../components/icons/FailSearchSvg";
 import {styles} from "./Styles"
 import * as Location from 'expo-location';
 

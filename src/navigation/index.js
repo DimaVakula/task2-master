@@ -4,8 +4,8 @@ import {NavigationContainer} from "@react-navigation/native";
 import {DarkTheme, LightTheme} from "../constants";
 import {WeatherCityStack} from "./weatherCityStack";
 import {CitySvg, DailySvg, HourlySvg} from "../components/icons/CitySvg";
-import DailyScreen from "../components/screens/DailyScreen/DailyScreen";
-import HourlyScreen from "../components/screens/HourlyScreen/HourlyScreen";
+import DailyScreen from "../screens/DailyScreen/DailyScreen";
+import HourlyScreen from "../screens/HourlyScreen/HourlyScreen";
 import React from "react";
 
 const Tab = createBottomTabNavigator();

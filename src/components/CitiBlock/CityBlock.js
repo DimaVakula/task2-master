@@ -3,8 +3,6 @@ import {Text, View, Image, useColorScheme, Pressable} from "react-native";
 import {styles} from "./Styles";
 import {useNavigation} from '@react-navigation/native'
 import {createStackNavigator} from "@react-navigation/stack";
-import WeatherScreen from "../screens/WeatherScreen/WeatherScreen";
-import {CurrentWeatherScreen} from "../screens/CurrentWeatherScreen/CurrentWeatherScreen";
 
 
 const Stack = createStackNavigator();
