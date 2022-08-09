@@ -11,12 +11,12 @@ import {
     View,
 } from "react-native";
 import {CityBlock,CityListItems} from "../../components/CitiBlock/CityBlock";
-import {getWeather, locationWeather} from "../../utils";
+import {getWeather} from "../../utils";
 import {DarkTheme, LightTheme} from "../../constants";
 import {CrossSvg} from "../../components/icons/CrossSvg";
 import {FailSearchSvg} from "../../components/icons/FailSearchSvg";
 import {styles} from "./Styles"
-import * as Location from 'expo-location';
+
 
 
 const cityList = ['Гомель', 'Минск', 'Гродно', 'Витебск', 'Могилёв', 'Брест'];
@@ -90,10 +90,8 @@ function WeatherScreen() {
     const [data, setData] = useState();
     const [searchResult, setSearchResult] = useState()
     const [loading, setLoading] = useState(true)
-    const [location, setLocation] = useState(null)
-    const [errorMsg, setErrorMsg] = useState(null)
+
     const scheme = useColorScheme()
-    let cord = 'Waiting..';
 
     useEffect(() => {
             fetchData({cityList, setLoading, setData})
@@ -114,26 +112,6 @@ function WeatherScreen() {
             }, 1500)
         }
     }, [text])
-
-    useEffect(() => {
-        (async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                setErrorMsg('Permission to access location was denied');
-                return;
-            }
-
-            let location = await Location.getCurrentPositionAsync({});
-            setLocation(location);
-            if (errorMsg) {
-                cord = errorMsg;
-            } else if (location) {
-                cord = JSON.stringify(location);
-            }
-            console.log('geolocation ' +cord)
-        })();
-    }, [cord]);
-
 
 
     const onRefresh = () => fetchData({cityList, setLoading, setData})
