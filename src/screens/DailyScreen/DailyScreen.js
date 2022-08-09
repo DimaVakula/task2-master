@@ -10,7 +10,9 @@ const LocationResultList = (props) => {
     return(
         <SafeAreaView style={{flex:1, backgroundColor: 'yellow'}}>
             <View style={[styles.title, scheme === 'dark' ? styles.titleDark : styles.titleLight]}>
-                <Text style={styles.titleText}>{props.data.name}</Text>
+                <Text style={styles.titleText}>
+                    City
+                </Text>
             </View>
             <FlatList
                 contentContainerStyle={styles.contentContainerStyle}
