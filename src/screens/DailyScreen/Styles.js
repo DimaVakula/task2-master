@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     title: {
         height: 64,
         justifyContent: 'center',
-        backgroundColor: 'red',
+        backgroundColor: 'red'
     },
     titleLight: {
         color: 'black'
@@ -18,13 +18,19 @@ export const styles = StyleSheet.create({
         color: 'white'
     },
     titleText: {
-        paddingHorizontal: 16
+        paddingHorizontal: 16,
+        fontStyle: 'normal',
+        fontWeight: '700',
+        fontSize: 20,
+        lineHeight: 34,
+        letterSpacing: 0.24,
+        backgroundColor: 'purple'
     },
     contentContainerStyle:
         {
             justifyContent: 'center',
             paddingHorizontal: 16,
-            paddingTop: 16
+           // paddingTop: 16
         },
     viewFlat: {
         height: 8
