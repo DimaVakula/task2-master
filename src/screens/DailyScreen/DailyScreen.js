@@ -7,39 +7,31 @@ import * as Location from "expo-location";
 
 const LocationResultList = (props) => {
     const scheme = useColorScheme()
-    return(
-        <SafeAreaView style={{flex:1, backgroundColor: 'green'}}>
-            <View style={styles.title}>
-                <Text style={[styles.titleText,scheme === 'dark' ? styles.titleDark : styles.titleLight]}>
-                    City
-                </Text>
-            </View>
-            <View style={{height:100, backgroundColor:'white'}}>
-            <FlatList
-                contentContainerStyle={styles.contentContainerStyle}
-                ItemSeparatorComponent={() => (
-                    <View style={styles.viewFlat}/>
-                )}
-                refreshing={props.loading}
-                onRefresh={props.onRefresh}
-                columnWrapperStyle={styles.columnWrapperStyle}
-                data={props.data}
-                ListEmptyComponent={<ActivityIndicator/>}
-                numColumns={2}
-                renderItem={({item}) => <CityListItems title={props.data.name} icon={props.data.weather[0].icon} temp={Math.trunc(props.data.main.temp - 273)}/>}
-            />
-            </View>
-        </SafeAreaView>
-    )
+    return (<SafeAreaView>
+        <FlatList
+            contentContainerStyle={styles.contentContainerStyle}
+            ItemSeparatorComponent={() => (
+                <View style={styles.viewFlat}/>
+            )}
+            refreshing={props.loading}
+            onRefresh={props.onRefresh}
+            columnWrapperStyle={styles.columnWrapperStyle}
+            data={props.data}
+            ListEmptyComponent={<ActivityIndicator/>}
+            numColumns={2}
+                renderItem={({item}) => <CityListItems title={item.name} icon={item.weather[0].icon} temp={Math.trunc(item.main.temp - 273)}/>}
+        />
+    </SafeAreaView>)
 }
 
 const fetchCity = async ({setLoading, setSearchResult, location}) => {
+    const getCity = []
     setLoading(true)
     await fetch(locationWeather(location.coords.latitude,location.coords.longitude))
         .then(response => { return response.json()})
-        .then(searchResult => { console.log(searchResult, searchResult.name, searchResult.weather[0].icon, searchResult.main.temp)
-            setLoading(false)
+        .then(data => { return getCity.push(data), setSearchResult(getCity)
         })
+    setLoading(false)
 }
 
 function DailyScreen() {
@@ -65,18 +57,19 @@ function DailyScreen() {
             } else if (location) {
                 cord = JSON.stringify(location);
             }
-            console.log('geolocation ' +cord)
                 fetchCity({setLoading, setSearchResult, location})
         })();
     }, [])
 
     const onRefresh = () => fetchCity({setLoading, setSearchResult, location})
     return (
-        <View>
-        {loading ? (<ActivityIndicator show={true}/>, console.log('322'))
-                : <LocationResultList loading={loading} onRefresh={onRefresh} data={searchResult} searchResult={searchResult}/>
+        <SafeAreaView style={styles.safeArea}>
+        {loading ? <ActivityIndicator show={true}/>
+                : searchResult !== null ? <LocationResultList loading={loading} onRefresh={onRefresh} data={searchResult} searchResult={searchResult}/>
+                : <View style={{alignItems: 'center', justifyContent: 'center'}}><Text>FAIL LOCATION</Text></View>
+
         }
-        </View>
+        </SafeAreaView>
     );
 }
 export default DailyScreen

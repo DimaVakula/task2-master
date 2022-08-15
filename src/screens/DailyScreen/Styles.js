@@ -1,4 +1,5 @@
 import {StyleSheet} from "react-native";
+import {DarkTheme, LightTheme} from "../../constants";
 
 export const styles = StyleSheet.create({
     dailyScreen: {
@@ -11,12 +12,8 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: 'red'
     },
-    titleLight: {
-        color: 'black'
-    },
-    titleDark: {
-        color: 'white'
-    },
+    textLight: {color: LightTheme.colors.text},
+    textDark: {color: DarkTheme.colors.text},
     titleText: {
         paddingHorizontal: 16,
         fontStyle: 'normal',
@@ -24,18 +21,20 @@ export const styles = StyleSheet.create({
         fontSize: 20,
         lineHeight: 34,
         letterSpacing: 0.24,
-        backgroundColor: 'purple'
     },
     contentContainerStyle:
         {
             justifyContent: 'center',
             paddingHorizontal: 16,
-           // paddingTop: 16
+            paddingTop: 16,
         },
     viewFlat: {
         height: 8
     },
     columnWrapperStyle: {
         justifyContent: "space-between",
+    },
+    safeArea: {
+        flex:1
     },
 })
