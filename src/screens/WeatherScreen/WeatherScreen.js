@@ -9,6 +9,7 @@ import {
     TextInput,
     useColorScheme,
     View,
+    Modal,
 } from "react-native";
 import {CityBlock,CityListItems} from "../../components/CitiBlock/CityBlock";
 import {getWeather} from "../../utils";
@@ -46,7 +47,7 @@ const SearchResultList = (props)=>{
     const scheme = useColorScheme()
     if(!props.data || props.data[0].cod === '404' || !props.data[0].weather[0].icon )
         return <View style={[styles.failSearch, scheme === 'dark' ? styles.failSearchDark : styles.failSearchLight]}><FailSearchSvg/><Text style={[styles.failSearchText,scheme === 'dark' ? styles.failSearchLightText : styles.failSearchDarkText]}>No data for {props.text}</Text></View>
-    return (<SafeAreaView style={styles.safeArea}>
+    return (<SafeAreaView>
         <View>
             <Text style={[styles.searchText,scheme === 'dark' ? styles.textDark : styles.textLight]}>search result</Text>
         </View>
@@ -84,6 +85,18 @@ const CrossView = (props) => {
     )
 }
 
+export const OverlayLoading = (props) => {
+    return(
+    <Modal animationType="fade"
+        transparent={true}
+        visible={props.show}>
+        <View style={[styles.overlay,props.scheme === 'dark' ? styles.rectDark : styles.rectLight]}>
+            <ActivityIndicator show={true}/>
+        </View>
+    </Modal>
+    )
+}
+
 function WeatherScreen() {
     const timeRef = useRef(null);
     const [text, onChangeText] = React.useState('')
@@ -115,6 +128,7 @@ function WeatherScreen() {
 
 
     const onRefresh = () => fetchData({cityList, setLoading, setData})
+    const onRefreshCity = () => fetchCity({setLoading, setData: setSearchResult, text})
     return (
         <SafeAreaView style={styles.safeArea}>
             <StatusBar
@@ -122,7 +136,7 @@ function WeatherScreen() {
                 barStyle={"default"}
             />
                 <CrossView text={text} onChangeText={onChangeText}/>
-            {loading ? (<ActivityIndicator show={true}/>)
+            {loading ? <OverlayLoading show={loading} scheme={scheme}/>
                  : text === ''  ? <FlatList
                         contentContainerStyle={styles.contentContainerStyle}
                         ItemSeparatorComponent={() => (
@@ -137,7 +151,7 @@ function WeatherScreen() {
                         renderItem={({item}) => <CityBlock title={item.name} icon={item.weather[0].icon}
                                                            temp={Math.trunc(item.main.temp - 273)}/>}
                     />
-                    :<SearchResultList data={searchResult} text={text} loading={loading} onRefrsh={onRefresh}/>
+                    :<SearchResultList data={searchResult} text={text} loading={loading} onRefrsh={onRefreshCity}/>
             }
         </SafeAreaView>
     );

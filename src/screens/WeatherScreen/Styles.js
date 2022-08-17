@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
             paddingHorizontal: 16
         },
     safeArea: {
-        flex: 1
+        flex: 1,
     },
     failSearch: {
         flex: 1,
@@ -75,5 +75,19 @@ export const styles = StyleSheet.create({
         textTransform: 'uppercase',
         color: '#000',
         flexGrow: 0
-    }
+    },
+    overlay:{
+        position: 'absolute',
+        backgroundColor: 'rgba(0, 0, 0, 1)',
+        left: '0%',
+        right: '0%',
+        top: '0%',
+        bottom: '0%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        opacity: 0.5,
+    },
+    rectDark: {backgroundColor: DarkTheme.colors.card, borderColor: DarkTheme.colors.border},
+    rectLight: {backgroundColor: LightTheme.colors.card, borderColor: LightTheme.colors.border},
+
 })

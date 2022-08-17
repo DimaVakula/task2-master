@@ -4,6 +4,7 @@ import {styles} from "./Styles"
 import {CityListItems} from "../../components/CitiBlock/CityBlock";
 import {locationWeather} from "../../utils";
 import * as Location from "expo-location";
+import {OverlayLoading} from "../WeatherScreen/WeatherScreen";
 
 const LocationResultList = (props) => {
     const scheme = useColorScheme()
@@ -64,10 +65,9 @@ function DailyScreen() {
     const onRefresh = () => fetchCity({setLoading, setSearchResult, location})
     return (
         <SafeAreaView style={styles.safeArea}>
-        {loading ? <ActivityIndicator show={true}/>
+        {loading ? <OverlayLoading show={loading} scheme={scheme}/>
                 : searchResult !== null ? <LocationResultList loading={loading} onRefresh={onRefresh} data={searchResult} searchResult={searchResult}/>
                 : <View style={{alignItems: 'center', justifyContent: 'center'}}><Text>FAIL LOCATION</Text></View>
-
         }
         </SafeAreaView>
     );
