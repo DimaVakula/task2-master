@@ -9,7 +9,7 @@ import {
     TextInput,
     useColorScheme,
     View,
-    Modal, Dimensions,
+    Modal,
 } from "react-native";
 import {CityBlock,CityListItems} from "../../components/CitiBlock/CityBlock";
 import {getWeather} from "../../utils";
@@ -17,7 +17,7 @@ import {DarkTheme, LightTheme} from "../../constants";
 import {CrossSvg} from "../../components/icons/CrossSvg";
 import {FailSearchSvg} from "../../components/icons/FailSearchSvg";
 import {styles} from "./Styles"
-import {Canvas, rect, rrect, useImage,Image, ColorMatrix, Blur,DiffRect,Group} from "@shopify/react-native-skia";
+import {Animation} from "../../animation/Animation";
 
 
 
@@ -85,38 +85,16 @@ const CrossView = (props) => {
         </View>
     )
 }
-const { width, height } = Dimensions.get('screen');
-const SIZE = width - 50;
-const PADDING = height / 4;
-
-const path = 'M2 44.982V22.001C2 10.955 10.954 2 22 2h23.197';
-const outer = rrect(rect(0, 0, width, height), 0, 0);
-const inner = rrect(rect(25, PADDING, SIZE, SIZE), 20, 20);
-
 
 export const OverlayLoading = (props) => {
-    const image = useImage(require("../../../assets/baltika.png"));
-
     return(
-            <Canvas
-                style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }}
-            >
-                <Group color={'gray'}>
-                    <DiffRect outer={outer} inner={inner} opacity={0.5}>
-                        <Blur blur={7} />
-                    </DiffRect>
-                    {image && (
-                        <Image
-                            image={image}
-                            fit="contain"
-                            x={25}
-                            y={PADDING}
-                            width={SIZE}
-                            height={SIZE}
-                        />
-                    )}
-                </Group>
-            </Canvas>
+    <Modal animationType="fade"
+        transparent={true}
+        visible={props.show}>
+        <View style={[styles.overlay,props.scheme === 'dark' ? styles.rectDark : styles.rectLight]}>
+        <Animation/>
+        </View>
+    </Modal>
     )
 }
 
@@ -159,24 +137,23 @@ function WeatherScreen() {
                 barStyle={"default"}
             />
                 <CrossView text={text} onChangeText={onChangeText}/>
-            {
-                text === ''  ? <FlatList
-                contentContainerStyle={styles.contentContainerStyle}
-                ItemSeparatorComponent={() => (
-                <View style={styles.viewFlat}/>
-                )}
-                refreshing={loading}
-                onRefresh={onRefresh}
-                columnWrapperStyle={styles.columnWrapperStyle}
-                data={data}
-                ListEmptyComponent={<ActivityIndicator/>}
-                numColumns={2}
-                renderItem={({item}) => <CityBlock title={item.name} icon={item.weather[0].icon}
-                temp={Math.trunc(item.main.temp - 273)}/>}
-                />
-                :<SearchResultList data={searchResult} text={text} loading={loading} onRefrsh={onRefreshCity}/>}
-            {true && <OverlayLoading show={true} scheme={scheme}/>}
-
+            {loading ? <OverlayLoading show={loading} scheme={scheme}/>
+                 : text === ''  ? <FlatList
+                        contentContainerStyle={styles.contentContainerStyle}
+                        ItemSeparatorComponent={() => (
+                            <View style={styles.viewFlat}/>
+                        )}
+                        refreshing={loading}
+                        onRefresh={onRefresh}
+                        columnWrapperStyle={styles.columnWrapperStyle}
+                        data={data}
+                        ListEmptyComponent={<ActivityIndicator/>}
+                        numColumns={2}
+                        renderItem={({item}) => <CityBlock title={item.name} icon={item.weather[0].icon}
+                                                           temp={Math.trunc(item.main.temp - 273)}/>}
+                    />
+                    :<SearchResultList data={searchResult} text={text} loading={loading} onRefrsh={onRefreshCity}/>
+            }
         </SafeAreaView>
     );
 }
