@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import {
     ActivityIndicator,
     FlatList,
@@ -18,6 +18,7 @@ import {CrossSvg} from "../../components/icons/CrossSvg";
 import {FailSearchSvg} from "../../components/icons/FailSearchSvg";
 import {styles} from "./Styles"
 import {Animation} from "../../animation/Animation";
+import {LoadingContext} from "../../../App";
 
 
 
@@ -103,7 +104,7 @@ function WeatherScreen() {
     const [text, onChangeText] = React.useState('')
     const [data, setData] = useState();
     const [searchResult, setSearchResult] = useState()
-    const [loading, setLoading] = useState(true)
+    const {loading, setLoading} = useContext(LoadingContext)
 
     const scheme = useColorScheme()
 

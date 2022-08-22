@@ -1,10 +1,11 @@
 import {ActivityIndicator, FlatList, SafeAreaView, Text, useColorScheme, View} from "react-native";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {styles} from "./Styles"
 import {CityListItems} from "../../components/CitiBlock/CityBlock";
 import {locationWeather} from "../../utils";
 import * as Location from "expo-location";
 import {OverlayLoading} from "../WeatherScreen/WeatherScreen";
+import {LoadingContext} from "../../../App";
 
 const LocationResultList = (props) => {
     const scheme = useColorScheme()
@@ -37,9 +38,9 @@ const fetchCity = async ({setLoading, setSearchResult, location}) => {
 
 function DailyScreen() {
     const [searchResult, setSearchResult] = useState()
-    const [loading, setLoading] = useState(true)
     const [location, setLocation] = useState(null)
     const [errorMsg, setErrorMsg] = useState(null)
+    const {loading, setLoading} = useContext(LoadingContext)
     let cord = 'Waiting..';
     const scheme = useColorScheme()
 
