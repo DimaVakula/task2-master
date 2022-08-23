@@ -9,17 +9,14 @@ import {
     TextInput,
     useColorScheme,
     View,
-    Modal,
 } from "react-native";
-import {CityBlock,CityListItems} from "../../components/CitiBlock/CityBlock";
+import {CityBlock, CityListItems} from "../../components/CitiBlock/CityBlock";
 import {getWeather} from "../../utils";
 import {DarkTheme, LightTheme} from "../../constants";
 import {CrossSvg} from "../../components/icons/CrossSvg";
 import {FailSearchSvg} from "../../components/icons/FailSearchSvg";
 import {styles} from "./Styles"
-import {Animation} from "../../animation/Animation";
 import {LoadingContext} from "../../../App";
-
 
 
 const cityList = ['Гомель', 'Минск', 'Гродно', 'Витебск', 'Могилёв', 'Брест'];
@@ -27,10 +24,14 @@ const cityList = ['Гомель', 'Минск', 'Гродно', 'Витебск'
 const fetchData = async ({setLoading, setData, cityList}) => {
     const dataList = []
     setLoading(true)
-    for(let i = 0; i < cityList.length; i++) {
+    for (let i = 0; i < cityList.length; i++) {
         await fetch(getWeather(cityList[i]))
-            .then(response => { return response.json()})
-            .then(data => { return dataList.push(data), setData(dataList)})
+            .then(response => {
+                return response.json()
+            })
+            .then(data => {
+                return dataList.push(data), setData(dataList)
+            })
     }
     setLoading(false)
 }
@@ -39,39 +40,47 @@ const fetchCity = async ({setLoading, setData: setSearchResult, text}) => {
     const getCity = []
     setLoading(true)
     await fetch(getWeather(text))
-        .then(response => { return response.json()})
-        .then(data => { return getCity.push(data), setSearchResult(getCity)
+        .then(response => {
+            return response.json()
+        })
+        .then(data => {
+            return getCity.push(data), setSearchResult(getCity)
         })
     setLoading(false)
 }
 
-const SearchResultList = (props)=>{
+const SearchResultList = (props) => {
     const scheme = useColorScheme()
-    if(!props.data || props.data[0].cod === '404' || !props.data[0].weather[0].icon )
-        return <View style={[styles.failSearch, scheme === 'dark' ? styles.failSearchDark : styles.failSearchLight]}><FailSearchSvg/><Text style={[styles.failSearchText,scheme === 'dark' ? styles.failSearchLightText : styles.failSearchDarkText]}>No data for {props.text}</Text></View>
+    if (!props.data || props.data[0].cod === '404' || !props.data[0].weather[0].icon)
+        return <View
+            style={[styles.failSearch, scheme === 'dark' ? styles.failSearchDark : styles.failSearchLight]}><FailSearchSvg/><Text
+            style={[styles.failSearchText, scheme === 'dark' ? styles.failSearchLightText : styles.failSearchDarkText]}>No
+            data for {props.text}</Text></View>
     return (<SafeAreaView>
         <View>
-            <Text style={[styles.searchText,scheme === 'dark' ? styles.textDark : styles.textLight]}>search result</Text>
+            <Text style={[styles.searchText, scheme === 'dark' ? styles.textDark : styles.textLight]}>search
+                result</Text>
         </View>
-    <FlatList
-        contentContainerStyle={styles.contentContainerStyle}
-        ItemSeparatorComponent={() => (
-            <View style={styles.viewFlat}/>
-        )}
-        refreshing={props.loading}
-        onRefresh={props.onRefresh}
-        columnWrapperStyle={styles.columnWrapperStyle}
-        data={props.data}
-        ListEmptyComponent={<ActivityIndicator/>}
-        numColumns={2}
-        renderItem={({item}) => <CityListItems title={props.data[0].name} icon={props.data[0].weather[0].icon} temp={Math.trunc(props.data[0].main.temp - 273)}/>}
-            />
+        <FlatList
+            contentContainerStyle={styles.contentContainerStyle}
+            ItemSeparatorComponent={() => (
+                <View style={styles.viewFlat}/>
+            )}
+            refreshing={props.loading}
+            onRefresh={props.onRefresh}
+            columnWrapperStyle={styles.columnWrapperStyle}
+            data={props.data}
+            ListEmptyComponent={<ActivityIndicator/>}
+            numColumns={2}
+            renderItem={({item}) => <CityListItems title={props.data[0].name} icon={props.data[0].weather[0].icon}
+                                                   temp={Math.trunc(props.data[0].main.temp - 273)}/>}
+        />
     </SafeAreaView>)
 }
 
 const CrossView = (props) => {
     const scheme = useColorScheme()
-    return(
+    return (
         <View style={styles.crossView}>
             <TextInput
                 style={[styles.textInput, scheme === 'dark' ? styles.textInputDark : styles.textInputLight]}
@@ -80,22 +89,10 @@ const CrossView = (props) => {
                 placeholderTextColor={scheme === 'dark' ? DarkTheme.colors.border : LightTheme.colors.border}
                 value={props.text}
             />
-            {props.text.length > 0&& (<Pressable style={styles.cross} onPress={() => props.onChangeText('')}>
-            <CrossSvg/>
-        </Pressable>)}
+            {props.text.length > 0 && (<Pressable style={styles.cross} onPress={() => props.onChangeText('')}>
+                <CrossSvg/>
+            </Pressable>)}
         </View>
-    )
-}
-
-export const OverlayLoading = (props) => {
-    return(
-    <Modal animationType="fade"
-        transparent={true}
-        visible={props.show}>
-        <View style={[styles.overlay,props.scheme === 'dark' ? styles.rectDark : styles.rectLight]}>
-        <Animation/>
-        </View>
-    </Modal>
     )
 }
 
@@ -122,7 +119,6 @@ function WeatherScreen() {
             timeRef.current = setTimeout(async () => {
                 console.log('fetch ' + text)
                 fetchCity({setLoading, setData: setSearchResult, text})
-                console.log('++' + JSON.stringify(searchResult, null, 2))
                 timeRef.current = null
             }, 1500)
         }
@@ -137,23 +133,22 @@ function WeatherScreen() {
                 animated={true}
                 barStyle={"default"}
             />
-                <CrossView text={text} onChangeText={onChangeText}/>
-            {loading ? <OverlayLoading show={loading} scheme={scheme}/>
-                 : text === ''  ? <FlatList
-                        contentContainerStyle={styles.contentContainerStyle}
-                        ItemSeparatorComponent={() => (
-                            <View style={styles.viewFlat}/>
-                        )}
-                        refreshing={loading}
-                        onRefresh={onRefresh}
-                        columnWrapperStyle={styles.columnWrapperStyle}
-                        data={data}
-                        ListEmptyComponent={<ActivityIndicator/>}
-                        numColumns={2}
-                        renderItem={({item}) => <CityBlock title={item.name} icon={item.weather[0].icon}
-                                                           temp={Math.trunc(item.main.temp - 273)}/>}
-                    />
-                    :<SearchResultList data={searchResult} text={text} loading={loading} onRefrsh={onRefreshCity}/>
+            <CrossView text={text} onChangeText={onChangeText}/>
+            {text === '' ? <FlatList
+                    contentContainerStyle={styles.contentContainerStyle}
+                    ItemSeparatorComponent={() => (
+                        <View style={styles.viewFlat}/>
+                    )}
+                    refreshing={loading}
+                    onRefresh={onRefresh}
+                    columnWrapperStyle={styles.columnWrapperStyle}
+                    data={data}
+                    ListEmptyComponent={<ActivityIndicator/>}
+                    numColumns={2}
+                    renderItem={({item}) => <CityBlock title={item.name} icon={item.weather[0].icon}
+                                                       temp={Math.trunc(item.main.temp - 273)}/>}
+                />
+                : <SearchResultList data={searchResult} text={text} loading={loading} onRefrsh={onRefreshCity}/>
             }
         </SafeAreaView>
     );

@@ -1,15 +1,41 @@
 import React, {createContext, useState} from "react";
 import {MyTabs} from "./src/navigation";
+import {Modal, useColorScheme, View} from "react-native";
+import {styles} from "./src/screens/WeatherScreen/Styles";
+import {Animation} from "./src/animation/Animation";
 
-export const LoadingContext = createContext();
+export const LoadingContext = createContext()
 
-export default function App() {
+const OverlayLoading = (props) => {
+    const scheme = useColorScheme()
+    return (
+        <Modal animationType="fade"
+               transparent={true}
+               visible={props.show}>
+            <View style={[styles.overlay, scheme === 'dark' ? styles.rectDark : styles.rectLight]}>
+                <Animation/>
+            </View>
+        </Modal>
+    )
+}
+
+const LoadingProvider = ({children}) => {
     const [loading, setLoading] = useState(true)
     return (
         <LoadingContext.Provider value={{loading, setLoading}}>
-            <MyTabs/>
+            <OverlayLoading show={loading}/>
+            {children}
         </LoadingContext.Provider>
     )
 }
+
+export default function App() {
+    return (
+        <LoadingProvider>
+            <MyTabs/>
+        </LoadingProvider>
+    )
+}
+
 
 
