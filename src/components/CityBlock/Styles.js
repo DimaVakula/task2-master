@@ -1,19 +1,30 @@
 import {Dimensions, StyleSheet} from "react-native";
 import {DarkTheme, LightTheme} from "../../constants";
+import {canvasPadding} from "../BacgroundGradient/BackgroundGradient";
 
 const {width} = Dimensions.get('window')
-const blockSize = width * 0.45
+export const blockSize = width * 0.5
 const cityBlockSize = width * 0.35
+const contentPadding = canvasPadding/1.8
 
 export const styles = StyleSheet.create({
+    // rect: {
+    //     // borderWidth: 2,
+    //     width: blockSize-canvasPadding*2,
+    //     height: blockSize-canvasPadding*2,
+    //     borderRadius: 5,
+    //     alignItems: 'center',
+    //     justifyContent: 'center',
+    // },
     rect: {
-        boxSizing: 'border-box',
-        borderWidth: 2,
-        width: blockSize,
-        height: blockSize,
-        borderRadius: 5,
+        position: 'absolute',
+        top: contentPadding,
+        bottom: contentPadding,
+        left: contentPadding,
+        right: contentPadding,
+        borderRadius: 20,
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
     rectDark: {backgroundColor: DarkTheme.colors.card, borderColor: DarkTheme.colors.border},
     rectLight: {backgroundColor: LightTheme.colors.card, borderColor: LightTheme.colors.border},
@@ -43,7 +54,7 @@ export const styles = StyleSheet.create({
         width: '100%'
 
     },
-    imageOne:{
+    imageOne: {
         width: 64,
         height: 64
     },

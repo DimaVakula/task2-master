@@ -10,7 +10,7 @@ import {
     useColorScheme,
     View,
 } from "react-native";
-import {CityBlock, CityListItems} from "../../components/CitiBlock/CityBlock";
+import {CityBlock, CityListItems} from "../../components/CityBlock/CityBlock";
 import {getWeather} from "../../utils";
 import {DarkTheme, LightTheme} from "../../constants";
 import {CrossSvg} from "../../components/icons/CrossSvg";
@@ -136,9 +136,9 @@ function WeatherScreen() {
             <CrossView text={text} onChangeText={onChangeText}/>
             {text === '' ? <FlatList
                     contentContainerStyle={styles.contentContainerStyle}
-                    ItemSeparatorComponent={() => (
-                        <View style={styles.viewFlat}/>
-                    )}
+                    // ItemSeparatorComponent={() => (
+                    //     <View style={styles.viewFlat}/>
+                    // )}
                     refreshing={loading}
                     onRefresh={onRefresh}
                     columnWrapperStyle={styles.columnWrapperStyle}

@@ -1,7 +1,7 @@
 import {ActivityIndicator, FlatList, SafeAreaView, Text, useColorScheme, View} from "react-native";
 import React, {useContext, useEffect, useState} from "react";
 import {styles} from "./Styles"
-import {CityListItems} from "../../components/CitiBlock/CityBlock";
+import {CityListItems} from "../../components/CityBlock/CityBlock";
 import {locationWeather} from "../../utils";
 import * as Location from "expo-location";
 import {LoadingContext} from "../../../App";
