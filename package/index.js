@@ -45,7 +45,7 @@ function configureProperties(obj) {
   }
 }
 
-// emulate ES5 getter/setter API using legacy APIs
+// emulate ES5 getter/setter api using legacy APIs
 // http://blogs.msdn.com/b/ie/archive/2010/09/07/transitioning-existing-code-to-the-es5-getter-setter-apis.aspx
 // (second clause tests for Object.defineProperty() in IE<9 that only supports extending DOM prototypes, but
 // note that IE<9 does not support __defineGetter__ or __defineSetter__ so it just renders the method harmless)

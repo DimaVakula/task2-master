@@ -24,8 +24,6 @@ export const styles = StyleSheet.create({
     },
     contentContainerStyle:
         {
-            justifyContent: 'center',
-            paddingHorizontal: 16,
             paddingTop: 16,
         },
     viewFlat: {

@@ -2,10 +2,10 @@ import {Dimensions, StyleSheet} from "react-native";
 import {DarkTheme, LightTheme} from "../../constants";
 import {canvasPadding} from "../BacgroundGradient/BackgroundGradient";
 
-const {width} = Dimensions.get('window')
+export const {width} = Dimensions.get('window')
 export const blockSize = width * 0.5
-const cityBlockSize = width * 0.35
-const contentPadding = canvasPadding/1.8
+export const cityBlockSize = width * 0.35
+const contentPadding = canvasPadding / 1.8
 
 export const styles = StyleSheet.create({
     // rect: {
@@ -48,15 +48,26 @@ export const styles = StyleSheet.create({
         width: '50%',
         height: '50%'
     },
+    background: {
+        borderRadius: 20,
+        width: width,
+        height: cityBlockSize,
+    },
     oneCity: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: '100%'
+        position: 'absolute',
+        borderRadius: 20,
+        paddingHorizontal: 16,
+        top: contentPadding,
+        bottom: contentPadding,
+        left: contentPadding,
+        right: contentPadding,
 
     },
-    imageOne: {
-        width: 64,
-        height: 64
+    titleTemp:{
+        justifyContent: 'space-between',
+        paddingVertical: 16
     },
     titleOne: {
         fontStyle: 'normal',
@@ -71,5 +82,12 @@ export const styles = StyleSheet.create({
         fontSize: 17,
         lineHeight: 24,
         letterSpacing: -0.41,
+    },
+    imageView:{
+        justifyContent:'center'
+    },
+    imageOne: {
+        width: 64,
+        height: 64
     }
 })

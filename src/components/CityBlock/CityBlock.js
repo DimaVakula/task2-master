@@ -1,33 +1,31 @@
 import React from 'react';
 import {Text, View, Image, useColorScheme, Pressable} from "react-native";
-import {blockSize, styles} from "./Styles";
+import {blockSize, width, styles, cityBlockSize} from "./Styles";
 import {useNavigation} from '@react-navigation/native'
-import {createStackNavigator} from "@react-navigation/stack";
-import {BackgroundGradient, canvasPadding} from "../BacgroundGradient/BackgroundGradient";
-
-
-const Stack = createStackNavigator();
+import {BackgroundGradient} from "../BacgroundGradient/BackgroundGradient";
 
 export const CityListItems = (props) => {
     const scheme = useColorScheme()
     return (
-        <View style={styles.oneCity}>
-            <View>
-                <Text style={[styles.titleOne, scheme === 'dark' ? styles.textDark : styles.textLight]}>
-                    {props.title}
-                </Text>
-                <Text style={[styles.tempOne, scheme === 'dark' ? styles.textDark : styles.textLight]}>
-                    {props.temp}
-                </Text>
+        <View>
+            <BackgroundGradient width={width} height={cityBlockSize}/>
+            <View style={[styles.oneCity,scheme === 'dark' ? styles.rectDark : styles.rectLight]}>
+                <View style={styles.titleTemp}>
+                    <Text style={[styles.titleOne, scheme === 'dark' ? styles.textDark : styles.textLight]}>
+                        {props.title}
+                    </Text>
+                    <Text style={[styles.tempOne, scheme === 'dark' ? styles.textDark : styles.textLight]}>
+                        {props.temp}
+                    </Text>
+                </View>
+                <View style={styles.imageView}>
+                    <Image
+                        style={styles.imageOne}
+                        source={{
+                            uri: `http://openweathermap.org/img/wn/${props.icon}@2x.png`,
+                        }}/>
+                </View>
             </View>
-            <View>
-                <Image
-                    style={styles.imageOne}
-                    source={{
-                        uri: `http://openweathermap.org/img/wn/${props.icon}@2x.png`,
-                    }}/>
-            </View>
-
         </View>
     )
 }
