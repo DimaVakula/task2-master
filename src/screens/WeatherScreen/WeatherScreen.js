@@ -30,7 +30,7 @@ function WeatherScreen() {
             }
 
             timeRef.current = setTimeout(async () => {
-                console.log('fetch ' + text)
+                //console.log('fetch ' + text)
                 await fetchCity({setLoading, setData: setSearchResult, text})
                 timeRef.current = null
             }, 1500)
